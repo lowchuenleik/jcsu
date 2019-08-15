@@ -1,26 +1,17 @@
 import React, { Component} from 'react';
 import NewsItemListing from '../presentation/NewsItemListing';
 import { connect } from 'react-redux';
-import {fetchNews} from "../../actions/actions";
+import { fetchNews } from "../../actions/actions";
 
 class News extends Component {
 
     componentDidMount() {
-            var fakeNews = [{
-            id: '1',
-            title: 'Mad owl chases car',
-            teaser: 'Mad owl seen tormenting drivers in Morecambe'
-        }, {
-            id: '2',
-            title: 'Owl stowaway',
-            teaser: 'Despicable owl impersonates passenger to board flight to Luton'
-        }];
-
-        this.props.dispatch(fetchNews(fakeNews));
+        this.props.dispatch(fetchNews());
     }
 
     render(){
-
+        console.log("News just")
+        console.log(this.props)
         const newsItems = this.props.news.map( (news, i) => {
             return ( <li key={i}><NewsItemListing data = {news} /></li> );
         });

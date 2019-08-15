@@ -5,6 +5,8 @@ import { fetchNewsItem } from '../../actions/actions'
 class NewsItemDetail extends Component {
 
     render(){
+        console.log("NEWSITEM DETAIL PROPS \n")
+        console.log(this.props);
         return (
             <div>
                 <h2>{this.props.data.title}</h2>
@@ -15,7 +17,6 @@ class NewsItemDetail extends Component {
 }
 
 NewsItemDetail.propTypes = {
-
     data: PropTypes.shape({
         id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
