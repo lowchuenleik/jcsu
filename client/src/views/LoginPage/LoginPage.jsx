@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimation: "cardHidden"
     };
   }
   componentDidMount() {

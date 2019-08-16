@@ -16,6 +16,20 @@ function newsItemReceived(newsItem){
     }
 }
 
+export function submitNewsStory(data){
+    return dispatch => {
+        return fetch('/news/', {
+            method: 'POST',
+             headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify(data),
+            mode: 'cors'})
+            .catch( (e) => console.log(e) );
+    }
+}
+
 export function fetchNews(){
     return dispatch => {
         return fetch(`/news`)

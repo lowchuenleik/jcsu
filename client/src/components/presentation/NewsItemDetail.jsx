@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-import { fetchNewsItem } from '../../actions/actions'
+import { fetchNewsItem } from '../../actions/newsActions'
 
 class NewsItemDetail extends Component {
 
@@ -18,7 +18,7 @@ class NewsItemDetail extends Component {
 
 NewsItemDetail.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         body: PropTypes.string.isRequired
     })

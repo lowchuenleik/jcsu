@@ -1,8 +1,10 @@
 const express = require('express');
 const routes =  require('./routes/index');
 const newsRoute = require('./routes/news');
+const authRoute = require('./routes/auth');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
@@ -27,12 +29,14 @@ mongoose.connect(dbURL, {useNewUrlParser:true}, function (err) {
 app.use(cors());
 app.options('*', cors());
 
-app.use(cors());
-app.options('*',cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/', routes);
 
 app.use('/news', newsRoute);
+
+app.use('/user',authRoute);
 
 app.listen(PORT,function(){
     console.log(`Listening on port ${PORT}`);
