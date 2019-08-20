@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import { Route, BrowserRouter } from 'react-router-dom';
 import store from './stores/store';
 import Home from './components/layouts/Home';
+import Grid from './components/layouts/Grid';
 import Layout from "./components/layouts/Layout";
 import Authentication from "./components/containers/Authentication";
 import About from './components/layouts/About';
@@ -19,8 +20,8 @@ class App extends Component {
         <Provider store={store}>
             <BrowserRouter>
                 <Layout>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/about" component={About} />
+                    <Route exact path="/" component={Grid} />
+                    <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>                    <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>
                     <Route path='/user' component={Authentication}/>

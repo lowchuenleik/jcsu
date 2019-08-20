@@ -17,8 +17,8 @@ class News extends Component {
         });
 
         return (
-            <div>
-                <h2>News Items</h2>
+            <div style={{color:"black"}}>
+                <h3 >News Items</h3>
                 {(this.props.news.length > 0) ? <ul>{newsItems}</ul> : <div> Sorry we have no news </div>}
             </div>
         )

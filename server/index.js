@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
+const multer = require('multer');
 
 let app = express();
 
@@ -23,7 +24,7 @@ mongoose.connect(dbURL, {useNewUrlParser:true}, function (err) {
     } else {
         console.log('Connected to: ' + dbURL)
     }
-}).then(r =>{console.log("End of concetion")})
+}).then(r =>{console.log("End of connection process..\n")})
 
 
 // Serve static files from the React app
@@ -60,3 +61,4 @@ app.use('/user',authRoute);
 app.listen(PORT,function(){
     console.log(`Listening on port ${PORT}`);
 })
+

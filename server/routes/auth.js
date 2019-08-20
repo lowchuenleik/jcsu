@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var authController = require('../controllers/authController')
+var authController = require('../controllers/AuthController')
 
 router.post('/:username', function(req, res, next) {
     authController.login(req.body.username, req.body.password, function(err, result){
