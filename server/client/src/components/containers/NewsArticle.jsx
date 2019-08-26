@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 class NewsArticle extends Component {
 
-
     componentDidMount(){
         this.props.dispatch(fetchNewsItem(this.props.match.params.id)).then(()=>{
             alert(this.props)
@@ -30,7 +29,7 @@ class NewsArticle extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("mapstatetoprops")
+    console.log("mapstatetoprops");
     console.log(state);
     return {
         newsItem: state.news.newsItem,

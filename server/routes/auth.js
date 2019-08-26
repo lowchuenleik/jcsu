@@ -1,6 +1,6 @@
-var express = require('express')
-var router = express.Router()
-var authController = require('../controllers/AuthController')
+var express = require('express');
+var router = express.Router();
+var authController = require('../controllers/AuthController');
 
 router.post('/:username', function(req, res, next) {
     authController.login(req.body.username, req.body.password, function(err, result){
@@ -52,4 +52,4 @@ router.post('/', function(req, res, next) {
 
 });
 
-module.exports = router
+module.exports = router;

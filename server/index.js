@@ -2,6 +2,8 @@ const express = require('express');
 const routes =  require('./routes/index');
 const newsRoute = require('./routes/news');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -40,12 +42,6 @@ app.get('/api/temp', (req, res) => {
   console.log(`Sent ${count} passwords`);
 });
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
 app.use(cors());
 app.options('*', cors());
 
@@ -57,6 +53,14 @@ app.use('/', routes);
 app.use('/news', newsRoute);
 
 app.use('/user',authRoute);
+
+app.use('/student',userRoute);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 app.listen(PORT,function(){
     console.log(`Listening on port ${PORT}`);

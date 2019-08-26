@@ -8,6 +8,7 @@ import Grid from './components/layouts/Grid';
 import Layout from "./components/layouts/Layout";
 import Authentication from "./components/containers/Authentication";
 import About from './components/layouts/About';
+import StudentView from "./components/containers/StudentView";
 import NewsItemDetail from './components/presentation/NewsItemDetail';
 import NewsArticle from "./components/containers/NewsArticle";
 import NewsSubmit from "./components/containers/NewsSubmit";
@@ -24,7 +25,8 @@ class App extends Component {
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>                    <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>
-                    <Route path='/user' component={Authentication}/>
+                    <Route path='/login' component={Authentication}/>
+                    <Route path='/user/:id' component={StudentView}/>
                 </Layout>
             </BrowserRouter>
         </Provider>
