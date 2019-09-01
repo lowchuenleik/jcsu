@@ -89,14 +89,18 @@ export function logoutUser() {
 }
 
 export function ravenLogin(){
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const temp = "https://raven.cam.ac.uk/auth/authenticate.html?ver=3&url=http%3A%2F%2Flocalhost%3A5000%2Fravenlogin"
     return dispatch => {
-        return fetch('/ravenlogin', {
+        // return fetch(proxyurl+'http://localhost:3000/ravenlogin', {
+        return fetch(temp, {
             method: 'GET',
             headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
-            mode: 'cors'})
+            }})
             .then( (response) => {
                 console.log("RESPONSE",response);
                 if (!response.ok) {

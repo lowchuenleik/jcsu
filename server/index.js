@@ -38,6 +38,12 @@ mongoose.connect(dbURL, {useNewUrlParser:true}, function (err) {
 app.use(cors());
 app.options('*', cors());
 
+app.use(function(req, res, next) { 
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next(); 
+}); 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -82,6 +88,8 @@ app.get('/ravenlogin', passport.authenticate('raven',{
   successRedirect: '/user/dashboard',
   failureRedirect: '/login'
 }), function (req, res) {
+  headers.append("Access-Control-Allow-Origin", "*");
+  console.log("Triggered rvenlogin endpoitn");
   res.redirect('/news');
 });
 
