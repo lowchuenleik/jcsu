@@ -20,9 +20,10 @@ class App extends Component {
         <Provider store={store}>
             <BrowserRouter>
                 <Layout>
-                    <Route exact path="/" component={Grid} />
+                    {/* <Route exact path="/" component={Grid} /> */}
+                    <Route path="/(login|)" component={Grid} />
                     <Route path="/about" component={About} exact />
-                    <Route path='/news/:id' component={NewsArticle}/>                    <Route path='/news/:id' component={NewsArticle}/>
+                    <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>
                     <Route path='/user' component={Authentication}/>
                 </Layout>

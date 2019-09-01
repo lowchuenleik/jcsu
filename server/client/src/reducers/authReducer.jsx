@@ -9,6 +9,8 @@ export default (state = initialState, action) => {
 
   var updated = Object.assign({}, state);
 
+  console.log("In auth action",action);
+ 
   switch(action.type) {
 
     case constants.USER_REGISTERED:
@@ -25,6 +27,11 @@ export default (state = initialState, action) => {
     case constants.USER_LOGOUT:
       updated['loggedIn'] = false;
       updated['username'] = '';
+      return updated;
+
+    case constants.USER_RAVEN_AUTH:
+      updated['loggedIn'] = true;
+      updated['username'] = action.crsid;
       return updated;
 
     default:

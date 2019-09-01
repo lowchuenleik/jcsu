@@ -20,6 +20,13 @@ function logout(){
     }
 }
 
+
+function raven(info){
+    return {
+        type: actionTypes.USER_RAVEN_AUTH
+    }
+}
+
 export function submitLogin(data){
     return dispatch => {
         return fetch(`/user/${data.username}`, {
@@ -50,10 +57,10 @@ export function submitRegister(data){
     return dispatch => {
         return fetch('/user/', {
             method: 'POST',
-             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data),
             mode: 'cors'})
             .then( (response) => {
@@ -78,5 +85,32 @@ export function logoutUser() {
         localStorage.removeItem('username');
         localStorage.removeItem('token');
         dispatch(logout());
+    }
+}
+
+export function ravenLogin(){
+    return dispatch => {
+        return fetch('/ravenlogin', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'})
+            .then( (response) => {
+                console.log("RESPONSE",response);
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((data)=>{
+                console.log("DATA",data);
+                // localStorage.setItem("crsid",data.data.crsid);
+                localStorage.setItem("crsid",data.hi);
+                // dispatch(raven(data.data.crsid))
+                dispatch(raven(data.hi))
+            })
+            .catch((e)=>console.log("ERROR IN RAVEN",e));
     }
 }
