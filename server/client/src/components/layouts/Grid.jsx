@@ -21,6 +21,7 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import TeamSection from "../../views/LandingPage/Sections/TeamSection.jsx";
 
 import News from "../containers/News";
+import UserProfile from 'components/containers/UserProfile';
 
 const dashboardRoutes = [];
 
@@ -68,6 +69,7 @@ class Grid extends Component {
               <div className={classes.container}>
                 <TeamSection />
                 <GraphNet />
+                <UserProfile />
                 <News />
               </div>
             </div>

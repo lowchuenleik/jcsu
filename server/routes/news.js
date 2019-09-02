@@ -5,6 +5,7 @@ const router = express.Router()
 router.get('/', function(req, res, next) {
 
     newsController.find(req.query, function(err, results){
+        console.log(results);
         if(err){
             console.log(err);
             res.json({

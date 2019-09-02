@@ -43,6 +43,7 @@ router.post('/', function(req, res, next) {
                 data: {tokenID: result, username: req.body.username}
             });
         }else{
+            console.log("err 401 in auth js")
             res.status(401).json({
                 success: 0,
                 data: result
