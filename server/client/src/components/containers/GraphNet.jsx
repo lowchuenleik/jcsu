@@ -19,9 +19,40 @@ class GraphNet extends Component {
         };
     }
 
+    componentDidMount() {
+        const params = new URLSearchParams(window.location.search);
+        const loggedin = params.get('loggedin');
+        if (loggedin){
+            fetch('/api/authenticate', {
+                method: 'get',
+                headers: {
+                  'Content-Type': 'application/json'
+            }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    console.log("Succesful repsonse",res);
+                    return res.json();
+                    // localStorage.setItem('username', data.data.username);
+                    // localStorage.setItem('token', data.data.tokenID);
+                } else {
+                    const error = new Error('Please log in again, session expired.');
+                    throw error;
+                }
+            })
+            .then((data)=>{
+                console.log("JSON PARSED",data);
+            })
+            .catch(err => {
+                console.error("ERROR IN GRAPHNET MOUNTING",err);
+                alert('We\'ve run into a problem \n\n' + err);
+            });
+        }
+    }
 
     login(){
-      this.props.dispatch(ravenLogin());
+        //Can either do it thru redux.....
+        this.props.dispatch(ravenLogin());
     }
   
     render (){
@@ -113,6 +144,7 @@ class GraphNet extends Component {
 
       const userNotLoggedIn = (
           <Button
+              href="http://localhost:5000/ravenlogin"
               color="primary"
               onClick={this.login.bind(this)}>
               <i className={"fab fa-sign-in"} />

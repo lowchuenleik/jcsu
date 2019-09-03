@@ -16,6 +16,7 @@ var session = require('cookie-session');
 var passport = require('passport');
 var Raven = require('passport-raven');
 var morgan = require('morgan');
+var jwt = require('jsonwebtoken');
 
 let app = express();
 
@@ -86,20 +87,30 @@ app.use(function(err, req, res, next) {
   console.log(err);
 });
 
-app.get('/ravenlogin', passport.authenticate('raven',{
-  successRedirect: '/user/dashboard',
-  failureRedirect: '/login'
-}), function (req, res) {
-  headers.append("Access-Control-Allow-Origin", "*");
+app.get('/ravenlogin', passport.authenticate('raven'), function (req, res) {
   console.log("Triggered rvenlogin endpoitn");
-  res.redirect('/news');
+  let redirect_url = process.argv[2] || 'http://localhost:3000';
+  res.redirect(redirect_url+'/?loggedin=true');
+});
+
+app.get('/api/authenticate', function(req, res) {
+  const { email, password } = req.body;
+  console.log("hit api auth, following is if auth or not",req.isAuthenticated());
+  if (req.isAuthenticated()){
+      var authToken = jwt.sign({username: req.user.crsid}, process.env.JWTSECRET,{ expiresIn: '10h' });
+      res.status(200).json({hi:"bye",token:authToken})
+  } else{
+      console.log("NOT AUTHENTICATED");
+      res.status(401).send({error: 'Please log in again, session expired.'})
+  }
+
 });
 
 app.get('/testing', function (req, res) {
   if (req.isAuthenticated()) {
     res.send('Logged in as ' + req.user.crsid + ' (a ' + (req.user.isCurrent ? 'current' : 'past') + ' member of the University of Cambridge).');
   } else {
-    res.send('<a href="/login">Login using Raven</a>');
+    res.send('<a href="/ravenlogin">Login using Raven</a>');
   }
 });
 
@@ -133,3 +144,4 @@ app.listen(PORT,function(){
     console.log(`Listening on port ${PORT}`);
 })
 
+//NOTE TO SELF: PROXY HAS BEEN REMOVED FROM PACKAGE JSON IN CLIENT, SEEIF THAT BREAKS ANYTHING.

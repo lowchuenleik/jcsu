@@ -22,7 +22,7 @@ class App extends Component {
             <BrowserRouter>
                 <Layout>
                     {/* <Route exact path="/" component={Grid} /> */}
-                    <Route path="/(login|)" component={Grid} />
+                    <Route path="/" component={Grid} />
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>

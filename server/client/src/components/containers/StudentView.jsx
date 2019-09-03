@@ -75,7 +75,7 @@ class ProfilePage extends Component {
         );
         console.log("INSIDE RENDER METHOD)");
         console.log(this.props);
-        let username = this.props.student === undefined ? "No username": this.props.student[0].username;
+        let username = this.props.student === undefined ? "No username": this.props.student.length === 0 ? "Zero length" : this.props.student[0].username;
         console.log(username);
         const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
         return (
