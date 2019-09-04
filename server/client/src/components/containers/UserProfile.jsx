@@ -21,12 +21,6 @@ class UserProfile extends Component {
         }
     }
 
-    updateView(nodes){
-        this.setState({
-                selected: nodes[0]
-            });
-    }
-
     componentDidMount() {
     }
 
@@ -38,10 +32,9 @@ class UserProfile extends Component {
             <div style={{color:"black"}}>
                 <Card plain style={{padding:"1rem",margin:"2em"}}>
                     <CardBody>
-                        <h1> {this.state.temp} </h1>
+                        <h1 className={classes.title}> User Profile View </h1>
                         <h4 className={classes.cardTitle}>
-                            Selected:
-                            {this.state.selected}
+                            Selected: {this.state.selected}
                         </h4>
                     </CardBody>
                 </Card>
@@ -53,6 +46,7 @@ class UserProfile extends Component {
 
 const mapStateToProps = state => {
     return {
+        selected: state.user.selected,
         news: state.news.news
     }
 }

@@ -63,7 +63,6 @@ class ProfilePage extends Component {
             alert(this.props)
         });
         console.log(this.props);
-
     }
 
     render() {

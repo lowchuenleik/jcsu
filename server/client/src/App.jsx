@@ -23,12 +23,12 @@ class App extends Component {
             <Router history = {history}>
                 <Layout>
                     {/* <Route exact path="/" component={Grid} /> */}
-                    <Route path="/" component={Grid} />
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>
                     <Route path='/login' component={Authentication}/>
                     <Route path='/user/:id' component={StudentView}/>
+                    <Route path="/" component={Grid} />
                 </Layout>
             </Router>
         </Provider>
