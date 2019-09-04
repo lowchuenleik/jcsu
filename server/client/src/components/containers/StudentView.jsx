@@ -36,7 +36,7 @@ import HeaderLinks from "../Header/HeaderLinks.jsx";
 import NavPills from "../NavPills/NavPills.jsx";
 import Parallax from "../Parallax/Parallax.jsx";
 
-import profile from "assets/img/faces/christian.jpg";
+import profile from "assets/img/faces/chuen.png";
 
 import studio1 from "assets/img/examples/studio-1.jpg";
 import studio2 from "assets/img/examples/studio-2.jpg";
@@ -59,9 +59,7 @@ class ProfilePage extends Component {
     componentDidMount() {
         let user_id = this.props.match.params.id;
         console.log(user_id);
-        this.props.dispatch(fetchUserProfile(user_id)).then(()=>{
-            alert(this.props)
-        });
+        this.props.dispatch(fetchUserProfile(user_id));
         console.log(this.props);
     }
 
@@ -247,12 +245,10 @@ class ProfilePage extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("mapstatetoprops in student");
-    console.log(state);
+    console.log("mapstatetoprops in studentView => state ",state);
     return {
         student: state.user.student,
         testing: state.user.funState,
-        testay: "hi tempo"
         //userProfilePic: state.news.newsItemLoading
     }
 }

@@ -22,6 +22,7 @@ class UserProfile extends Component {
     }
 
     componentDidMount() {
+        console.log("USER PROFILE VIEW COMPONENT MOUNTED")
     }
 
     render(){
@@ -46,7 +47,7 @@ class UserProfile extends Component {
 
 const mapStateToProps = state => {
     return {
-        selected: state.user.selected,
+        selected: state.user.student,
         news: state.news.news
     }
 }
