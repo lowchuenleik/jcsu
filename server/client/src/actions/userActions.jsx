@@ -39,15 +39,15 @@ export function fetchAllUsers(){
     }
 }
 
-export function fetchUserProfile(id){
+export function fetchUserProfile(username){
     return dispatch => {
         //This is the URL in the node server API backend
-        return fetch(`/student/${id}`)
+        return fetch(`/student/${username}`)
         .then( (response) => response.json() )
         //Data is defined in the rest api json thingy.
         .then( (data) => {console.log(data);console.log("in actions ");dispatch(userReceived(data.data))})
         //Catch is in the case of any errors and whatnot.
-        .catch( (e) => {console.log(e);console.log(id)} );
+        .catch( (e) => {console.log(e);console.log(username)} );
     }
 }
 

@@ -25,18 +25,23 @@ class UserProfile extends Component {
         console.log("USER PROFILE VIEW COMPONENT MOUNTED")
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("Component did update! Here look at props, ",this.props);
+    }
+
     render(){
         const { classes } = this.props;
-        let temp = this;
+
+        let selected_user = this.props.selected !== undefined ?  this.props.selected[0].username : "NO username";
 
         return (
             <div style={{color:"black"}}>
                 <Card plain style={{padding:"1rem",margin:"2em"}}>
                     <CardBody>
-                        <h1 className={classes.title}> User Profile View </h1>
-                        <h4 className={classes.cardTitle}>
-                            Selected: {this.state.selected}
-                        </h4>
+                        <h2 className={classes.title}> User Profile View </h2>
+                        <h3 className={classes.cardTitle}>
+                            Selected: {selected_user}
+                        </h3>
                     </CardBody>
                 </Card>
 

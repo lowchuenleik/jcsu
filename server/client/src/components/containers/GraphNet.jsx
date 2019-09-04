@@ -4,12 +4,10 @@ import Graph from "react-graph-vis";
 import teamStyle from "../../assets/jss/material-kit-react/views/landingPageSections/teamStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "components/CustomButtons/Button.jsx";
-import { ravenLogin } from '../../actions/authActions';
 import { getProfileFetch } from '../../actions/ravenActions';
 import { connect } from 'react-redux';
-import { Redirect, browserHistory } from 'react-router'
-import ravenReducer from "../../reducers/ravenReducer";
 import history from "../../history";
+import {fetchUserProfile} from "../../actions/userActions";
 
 let DIR = 'assets/img/faces/';
 
@@ -42,7 +40,7 @@ class GraphNet extends Component {
         console.log("THIS HERE IS URL : ",window.location.origin);
         const params = new URLSearchParams(window.location.search);
         const loggedin = params.get('loggedin');
-
+        this.props.getProfileFetch();
         if (loggedin){
             fetch('/api/authenticate', {
                 method: 'get',
@@ -72,6 +70,10 @@ class GraphNet extends Component {
                 alert('We\'ve run into a problem \n\n' + err);
             });
         }
+    }
+
+    triggerFetch(){
+          this.props.getUser();
     }
 
     render (){
@@ -139,6 +141,7 @@ class GraphNet extends Component {
 
       const { classes } = this.props;
 
+      let _this = this;
       const events = {
           select: function (event) {
               let {nodes, edges} = event;
@@ -146,14 +149,13 @@ class GraphNet extends Component {
               console.log(nodes);
               console.log("Selected edges:");
               console.log(edges);
-              this.updateView(nodes);
-
+              _this.triggerFetch();
           }
       };
 
       const userLoggedIn = (
           <div>
-              <div className={classes.section} >
+              <div className={classes.section} style={{paddingTop:0}}>
                 <h1 className={classes.title}>Logged in as: {this.props.username}</h1>
                 <Button
                   color="primary"
@@ -182,7 +184,7 @@ class GraphNet extends Component {
           <Button
               href={button_url}
               color="primary">
-              <i className={"fab fa-sign-in"} />
+              <i className={"fas fa-sign-in-alt"} />
               Sign in please to view the grid.
           </Button>
       );
@@ -191,7 +193,7 @@ class GraphNet extends Component {
 
       // console.log("IM RENDERING >>>>>>>>> isAUth",this.state.isAuth);
       return (
-        <div className={classes.section}>
+        <div className={classes.section} >
           {this.props.isAuth ? userLoggedIn : userNotLoggedIn}
         </div>
       )
@@ -207,7 +209,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getProfileFetch: () => dispatch(getProfileFetch())
+  getProfileFetch: () => dispatch(getProfileFetch()),
+  getUser: () => dispatch(fetchUserProfile("temp"))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

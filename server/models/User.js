@@ -16,8 +16,13 @@ const UserSchema = new mongoose.Schema({
     },
     id:{
         type: String,
+    },
+    subject:{
+        type: mongoose.Schema.Types.ObjectId,ref:"Subject",
+    },
+    accommodation:{
+        type: mongoose.Schema.Types.ObjectId,ref:"Accommodation",
     }
-
 });
 
 
