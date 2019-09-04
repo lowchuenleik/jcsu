@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Provider} from 'react-redux';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import store from './stores/store';
 import Home from './components/layouts/Home';
 import Grid from './components/layouts/Grid';
@@ -12,6 +12,7 @@ import StudentView from "./components/containers/StudentView";
 import NewsItemDetail from './components/presentation/NewsItemDetail';
 import NewsArticle from "./components/containers/NewsArticle";
 import NewsSubmit from "./components/containers/NewsSubmit";
+import history from "./history";
 
 import "assets/scss/material-kit-react.scss?v=1.7.0";
 
@@ -19,7 +20,7 @@ class App extends Component {
   render() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
+            <Router history = {history}>
                 <Layout>
                     {/* <Route exact path="/" component={Grid} /> */}
                     <Route path="/" component={Grid} />
@@ -29,7 +30,7 @@ class App extends Component {
                     <Route path='/login' component={Authentication}/>
                     <Route path='/user/:id' component={StudentView}/>
                 </Layout>
-            </BrowserRouter>
+            </Router>
         </Provider>
        );
   }

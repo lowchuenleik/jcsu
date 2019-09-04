@@ -5,7 +5,11 @@ import teamStyle from "../../assets/jss/material-kit-react/views/landingPageSect
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "components/CustomButtons/Button.jsx";
 import { ravenLogin } from '../../actions/authActions';
+import { getProfileFetch } from '../../actions/ravenActions';
 import { connect } from 'react-redux';
+import { Redirect, browserHistory } from 'react-router'
+import ravenReducer from "../../reducers/ravenReducer";
+import history from "../../history";
 
 let DIR = 'assets/img/faces/';
 
@@ -13,15 +17,32 @@ class GraphNet extends Component {
 
     constructor(){
       super();
-
       this.state = {
-          details:{}
+          details:{},
+          isAuth: false
         };
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("Component did update! Here look at props, ",this.props);
+        this.props.getProfileFetch();
+        if (prevProps.isAuth !== this.props.isAuth){
+            this.setState(this.state);
+        }
+    }
+
+    logout(){
+        localStorage.removeItem("token");
+        this.setState({isAuth:false});
+        history.push('/');
+    }
+
     componentDidMount() {
+        console.log("THIS HERE PROPS : ",this.props);
+        console.log("THIS HERE IS URL : ",window.location.origin);
         const params = new URLSearchParams(window.location.search);
         const loggedin = params.get('loggedin');
+
         if (loggedin){
             fetch('/api/authenticate', {
                 method: 'get',
@@ -42,6 +63,9 @@ class GraphNet extends Component {
             })
             .then((data)=>{
                 console.log("JSON PARSED",data);
+                localStorage.setItem('token', data.token);
+                this.props.getProfileFetch();
+                history.push('/');
             })
             .catch(err => {
                 console.error("ERROR IN GRAPHNET MOUNTING",err);
@@ -50,11 +74,6 @@ class GraphNet extends Component {
         }
     }
 
-    login(){
-        //Can either do it thru redux.....
-        this.props.dispatch(ravenLogin());
-    }
-  
     render (){
 
       const nodes = [
@@ -118,7 +137,6 @@ class GraphNet extends Component {
         }
       }
 
-      const isAuthenticated = this.props.auth === undefined ? false : true;
       const { classes } = this.props;
 
       const events = {
@@ -130,38 +148,66 @@ class GraphNet extends Component {
               console.log(edges);
               this.updateView(nodes);
 
-              //REDUX IN ACTION
-
-              this.props.dispatch()
           }
       };
 
       const userLoggedIn = (
-        <div className={classes.section} style={{background:'grey',height:800}} >
-            <Graph graph={graph} options={options} events={events} style={{ height: "640px" }} />
-        </div>
-      )
+          <div>
+              <div className={classes.section} >
+                <h1 className={classes.title}>Logged in as: {this.props.username}</h1>
+                <Button
+                  color="primary"
+                  onClick={this.logout.bind(this)}>
+                  Logout
+                  <i style={{display:'inline-block',marginLeft:".5em"}} className="fas fa-sign-out-alt fa-fw" />
+              </Button>
+              </div>
+              <div className={classes.section} style={{background:'grey',height:800}} >
+                <Graph graph={graph} options={options} events={events} style={{ height: "640px" }} />
+              </div>
+          </div>
+      );
+
+      let button_url = window.location.origin;
+      if (button_url.endsWith('3000')) {
+          button_url = button_url.slice(0, button_url.length-4);
+          button_url = button_url + '5000/ravenlogin'
+      } else{
+          button_url += "/ravenlogin"
+      }
+
+      console.log("BUTTON_URL: ",button_url);
 
       const userNotLoggedIn = (
           <Button
-              href="http://localhost:5000/ravenlogin"
-              color="primary"
-              onClick={this.login.bind(this)}>
+              href={button_url}
+              color="primary">
               <i className={"fab fa-sign-in"} />
               Sign in please to view the grid.
           </Button>
-      )
+      );
+
+      // let isAuthenticated = this.state.isAuth === undefined ? false : true;
+
+      // console.log("IM RENDERING >>>>>>>>> isAUth",this.state.isAuth);
       return (
         <div className={classes.section}>
-          {isAuthenticated ? userLoggedIn : userNotLoggedIn}
+          {this.props.isAuth ? userLoggedIn : userNotLoggedIn}
         </div>
       )
     }
 }
 
 const mapStateToProps = state => {
+    console.log("GraphNet mapstatetoprops",state);
   return {
+        isAuth: state.raven.authenticated,
+        username: state.raven.username
   }
 }
 
-export default connect(mapStateToProps,null)(withStyles(teamStyle)(GraphNet));
+const mapDispatchToProps = dispatch => ({
+  getProfileFetch: () => dispatch(getProfileFetch())
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

@@ -35,9 +35,9 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
-import team1 from "assets/img/faces/avatar.jpg";
-import team2 from "assets/img/faces/christian.jpg";
-import team3 from "assets/img/faces/kendall.jpg";
+import team1 from "assets/img/faces/sorcha.png";
+import team2 from "assets/img/faces/suzannah.png";
+import team3 from "assets/img/faces/theo.png";
 
 class TeamSection extends React.Component {
   render() {
@@ -64,10 +64,11 @@ class TeamSection extends React.Component {
                 </h4>
                 <CardBody>
                   <p className={classes.description}>
-                    You can write here details about one of your team members.
-                    You can give more details about what they do. Feel free to
-                    add some <a href="#pablo">links</a> for people to be able to
-                    follow them outside the site.
+                    I’m <a href="https://jcsu.jesus.cam.ac.uk/committee/jcsu-committee-2/president">Sorcha</a>
+                    and I am in my second year studying
+                    Spanish and Latin. As your president, I represent
+                    our student body and make sure that our voices
+                    are heard by College and University.
                   </p>
                 </CardBody>
                 <CardFooter className={classes.justifyCenter}>
@@ -103,14 +104,15 @@ class TeamSection extends React.Component {
                 <h4 className={classes.cardTitle}>
                   Olivia Wynne Thomas
                   <br />
-                  <small className={classes.smallTitle}>Designer</small>
+                  <small className={classes.smallTitle}>Vice-President</small>
                 </h4>
                 <CardBody>
                   <p className={classes.description}>
-                    You can write here details about one of your team members.
-                    You can give more details about what they do. Feel free to
-                    add some <a href="#pablo">links</a> for people to be able to
-                    follow them outside the site.
+                    Hi! I’m <a href="https://jcsu.jesus.cam.ac.uk/committee/jcsu-committee-2/vice-president">Liv</a>
+                    , and I’m in my second year studying History.
+                    As Vice-President I organise stash, halfway hall, take
+                    your views to the university wide student union meetings
+                    and generally try to be a friendly face around college.
                   </p>
                 </CardBody>
                 <CardFooter className={classes.justifyCenter}>
@@ -139,14 +141,16 @@ class TeamSection extends React.Component {
                 <h4 className={classes.cardTitle}>
                   Theo King
                   <br />
-                  <small className={classes.smallTitle}>Model</small>
+                  <small className={classes.smallTitle}>Secretary</small>
                 </h4>
                 <CardBody>
                   <p className={classes.description}>
-                    You can write here details about one of your team members.
-                    You can give more details about what they do. Feel free to
-                    add some <a href="#pablo">links</a> for people to be able to
-                    follow them outside the site.
+                    I’m <a href="https://jcsu.jesus.cam.ac.uk/committee/jcsu-committee-2/secretary">Theo </a>
+                    and I’m in my second year studying Economics.
+                    As well as my administrative work within the JCSU, on a
+                    college-wide level I am responsible for liaising with
+                    sports clubs and societies to aid their smooth running.
+
                   </p>
                 </CardBody>
                 <CardFooter className={classes.justifyCenter}>
