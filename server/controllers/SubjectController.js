@@ -1,10 +1,10 @@
-const User = require('../models/User')
+const Subject = require('../models/Subject')
 
 module.exports = {
 
     create: function(params,callback){
 
-        User.create(params, function(err,result){
+        Subject.create(params, function(err,result){
             if (err){
                 callback(err,null);
                 return
@@ -14,19 +14,17 @@ module.exports = {
     },
 
     find: function(params, callback){
-        console.log(params);
-        //Note the 2nd argument is what to return from finding it!
-        User.find(params,'id username subject accommodation', function(err, results){
+        Subject.find(params,'_id name description residents', function(err, results){
             if(err){
                 callback(err, null);
                 return;
             }
             callback(null, results);
-        }).populate('subject').populate('accommodation')
+        })
     },
 
     findById: function(id, callback){
-        User.findById(id, function(err, results){
+        Subject.findById(id, function(err, results){
             if(err){
                 callback(err, null);
                 return;

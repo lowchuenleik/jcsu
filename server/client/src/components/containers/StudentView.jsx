@@ -36,7 +36,7 @@ import HeaderLinks from "../Header/HeaderLinks.jsx";
 import NavPills from "../NavPills/NavPills.jsx";
 import Parallax from "../Parallax/Parallax.jsx";
 
-import profile from "assets/img/faces/chuen.png";
+import profile from "assets/img/faces/cll58.png";
 
 import studio1 from "assets/img/examples/studio-1.jpg";
 import studio2 from "assets/img/examples/studio-2.jpg";
@@ -51,8 +51,10 @@ import work5 from "assets/img/examples/clem-onojegaw.jpg";
 
 import profilePageStyle from "../../assets/jss/material-kit-react/views/profilePage.jsx";
 
+import Housemates from "./Housemates";
+
 import { connect } from 'react-redux';
-import { fetchUserProfile } from "../../actions/userActions";
+import { fetchUserProfile,fetchUserAccom,fetchUserSubject } from "../../actions/userActions";
 
 class ProfilePage extends Component {
 
@@ -60,6 +62,8 @@ class ProfilePage extends Component {
         let user_id = this.props.match.params.id;
         console.log(user_id);
         this.props.dispatch(fetchUserProfile(user_id));
+        this.props.dispatch(fetchUserSubject(user_id));
+        this.props.dispatch(fetchUserAccom(user_id));
         console.log(this.props);
     }
 
@@ -70,9 +74,10 @@ class ProfilePage extends Component {
               classes.imgRoundedCircle,
               classes.imgFluid
         );
-        console.log("INSIDE RENDER METHOD)");
-        console.log(this.props);
+        console.log("PROPS IN STUDENT VIEW",this.props);
         let username = this.props.student === undefined ? "No username": this.props.student.length === 0 ? "Zero length" : this.props.student[0].username;
+        let subject = this.props.subject === undefined ? "No subject" : this.props.subject;
+        let accommodation = this.props.accommodation === undefined ? "No accommodation" : this.props.accommodation;
         console.log(username);
         const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
         return (
@@ -99,8 +104,8 @@ class ProfilePage extends Component {
                               <img src={profile} alt="..." className={imageClasses} />
                             </div>
                             <div className={classes.name}>
-                              <h3 className={classes.title}>{username}</h3>
-                              <h6>Temporary</h6>
+                              <h3 className={classes.title}>Username: {username}</h3>
+                              <h6> Member of Jesus College </h6>
                               <Button justIcon link className={classes.margin5}>
                                 <i className={"fab fa-twitter"} />
                               </Button>
@@ -115,9 +120,12 @@ class ProfilePage extends Component {
                         </GridItem>
                       </GridContainer>
                       <div className={classes.description}>
-                        <p>
-                          Student here lols.{" "}
-                        </p>
+                          <p style={{fontWeight:"bolder",fontSize:"30px"}}>
+                          Subject: {subject} {" "}
+                          </p>
+                          <p style={{fontWeight:"bolder",fontSize:"30px"}}>
+                          Accommodation: {accommodation}
+                          </p>
                       </div>
                       <GridContainer justify="center">
                         <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
@@ -126,14 +134,21 @@ class ProfilePage extends Component {
                             color="primary"
                             tabs={[
                               {
-                                tabButton: "Studio",
+                                tabButton: "Subject",
                                 tabIcon: Camera,
                                 tabContent: (
-                                  <GridContainer justify="center">
+                                    <Housemates username={username}/>
+                                )
+                              },
+                              {
+                                tabButton: "Housemates",
+                                tabIcon: Palette,
+                                tabContent: (
+                                <GridContainer justify="center">
                                     <GridItem xs={12} sm={12} md={4}>
                                       <img
                                         alt="..."
-                                        src={studio1}
+                                        src={require("assets/img/faces/1.jpg")}
                                         className={navImageClasses}
                                       />
                                       <img
@@ -151,43 +166,6 @@ class ProfilePage extends Component {
                                       <img
                                         alt="..."
                                         src={studio4}
-                                        className={navImageClasses}
-                                      />
-                                    </GridItem>
-                                  </GridContainer>
-                                )
-                              },
-                              {
-                                tabButton: "Work",
-                                tabIcon: Palette,
-                                tabContent: (
-                                  <GridContainer justify="center">
-                                    <GridItem xs={12} sm={12} md={4}>
-                                      <img
-                                        alt="..."
-                                        src={work1}
-                                        className={navImageClasses}
-                                      />
-                                      <img
-                                        alt="..."
-                                        src={work2}
-                                        className={navImageClasses}
-                                      />
-                                      <img
-                                        alt="..."
-                                        src={work3}
-                                        className={navImageClasses}
-                                      />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={4}>
-                                      <img
-                                        alt="..."
-                                        src={work4}
-                                        className={navImageClasses}
-                                      />
-                                      <img
-                                        alt="..."
-                                        src={work5}
                                         className={navImageClasses}
                                       />
                                     </GridItem>
@@ -245,9 +223,10 @@ class ProfilePage extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("mapstatetoprops in studentView => state ",state);
     return {
         student: state.user.student,
+        subject: state.user.subject,
+        accommodation: state.user.accommodation,
         testing: state.user.funState,
         //userProfilePic: state.news.newsItemLoading
     }

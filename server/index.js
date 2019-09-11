@@ -3,6 +3,8 @@ const routes =  require('./routes/index');
 const newsRoute = require('./routes/news');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
+const subjectRoute = require('./routes/subject');
+const accomRoute = require('./routes/accommodation');
 const customAuthRoutes = require('./routes/customauth');
 
 const dotenv = require('dotenv').config();
@@ -161,6 +163,8 @@ app.use('/news', testMid); //Applying middleware
 app.use('/news', newsRoute);
 
 app.use('/user',authRoute);
+app.use('/subject',subjectRoute);
+app.use('/accommodation',accomRoute);
 app.use('/student',userRoute);
 
 // The "catchall" handler: for any request that doesn't

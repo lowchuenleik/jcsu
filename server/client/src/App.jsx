@@ -28,7 +28,7 @@ class App extends Component {
                     <Route path='/submit' component={NewsSubmit}/>
                     <Route path='/login' component={Authentication}/>
                     <Route path='/user/:id' component={StudentView}/>
-                    <Route path="/" component={Grid} />
+                    <Route path="/" component={Grid} exact />
                 </Layout>
             </Router>
         </Provider>

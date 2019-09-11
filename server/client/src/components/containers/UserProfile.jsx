@@ -32,7 +32,7 @@ class UserProfile extends Component {
     render(){
         const { classes } = this.props;
 
-        let selected_user = this.props.selected !== undefined ?  this.props.selected[0].username : "NO username";
+        let selected_user = this.props.selected == undefined ? "No username" : this.props.selected[0] !== undefined ? this.props.selected[0].username : "No username";
 
         return (
             <div style={{color:"black"}}>
@@ -54,6 +54,7 @@ const mapStateToProps = state => {
     return {
         selected: state.user.student,
         news: state.news.news
+
     }
 }
 

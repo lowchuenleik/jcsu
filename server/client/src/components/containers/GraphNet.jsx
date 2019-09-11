@@ -7,7 +7,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import { getProfileFetch } from '../../actions/ravenActions';
 import { connect } from 'react-redux';
 import history from "../../history";
-import {fetchUserProfile} from "../../actions/userActions";
+import {fetchUserProfile,fetchAllUsers} from "../../actions/userActions";
 
 let DIR = 'assets/img/faces/';
 
@@ -22,11 +22,14 @@ class GraphNet extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("Component did update! Here look at props, ",this.props);
+        // console.log("Component did update! Here look at props, ",this.props);
         this.props.getProfileFetch();
-        if (prevProps.isAuth !== this.props.isAuth){
-            this.setState(this.state);
-        }
+        // if (prevProps.isAuth !== this.props.isAuth){
+        //     this.setState(this.state);
+        // }
+        // if (prevProps !== this.props){
+        // }
+        console.log("ALL USERS : ",this.props.all_users);
     }
 
     logout(){
@@ -36,10 +39,9 @@ class GraphNet extends Component {
     }
 
     componentDidMount() {
-        console.log("THIS HERE PROPS : ",this.props);
-        console.log("THIS HERE IS URL : ",window.location.origin);
         const params = new URLSearchParams(window.location.search);
         const loggedin = params.get('loggedin');
+        this.props.getAllUsers();
         this.props.getProfileFetch();
         if (loggedin){
             fetch('/api/authenticate', {
@@ -78,45 +80,42 @@ class GraphNet extends Component {
 
     render (){
 
-      const nodes = [
-        {id: 1,  shape: 'circularImage', image: require("assets/img/faces/1.jpg")},
-        {id: 2,  shape: 'circularImage', image: DIR + '2.jpg'},
-        {id: 3,  shape: 'circularImage', image: DIR + '3.jpg'},
-        {id: 4,  shape: 'circularImage', image: DIR + '4.jpg', label:"pictures by this guy!"},
-        {id: 5,  shape: 'circularImage', image: DIR + '5.jpg'},
-        {id: 6,  shape: 'circularImage', image: DIR + '6.jpg'},
-        {id: 7,  shape: 'circularImage', image: DIR + '7.jpg'},
-        {id: 8,  shape: 'circularImage', image: DIR + '8.jpg'},
-        {id: 9,  shape: 'circularImage', image: DIR + '9.jpg'},
-        {id: 10, shape: 'circularImage', image: DIR + '10.jpg'},
-        {id: 11, shape: 'circularImage', image: DIR + '11.jpg'},
-        {id: 12, shape: 'circularImage', image: DIR + '12.jpg'},
-        {id: 13, shape: 'circularImage', image: DIR + '13.jpg'},
-        {id: 14, shape: 'circularImage', image: DIR + '14.jpg'},
-      ];
+        let allusers = this.props.all_users === undefined ? [{username:"broken"}] : this.props.all_users;
 
+        let nodes = [
+            {id: 1,  shape: 'circularImage', image: require("assets/img/faces/1.jpg")},
+            {id: 2,  shape: 'circularImage', image: require("assets/img/faces/cll58.png")},
+            {id: 3,  shape: 'circularImage', image: DIR + '3.jpg'},
+            {id: 4,  shape: 'circularImage', image: DIR + '4.jpg', label:"pictures by this guy!"},
+            {id: 5,  shape: 'circularImage', image: DIR + '5.jpg'},
+            {id: 6,  shape: 'circularImage', image: DIR + '6.jpg'},
+        ];
+
+        allusers.forEach(function (item, index) {
+            nodes.push({id:item.username,
+                    shape: 'circularImage',
+                    image:require(`assets/img/faces/${item.username}.png`),
+                    label: `${item.username}`})
+        });
 
       // create connections between people
       // value corresponds with the amount of contact between two people
       const edges = [
-      {from: 1, to: 2},
-      {from: 2, to: 3},
-      {from: 2, to: 4},
-      {from: 4, to: 5},
-      {from: 4, to: 10},
-      {from: 4, to: 6},
-      {from: 6, to: 7},
-      {from: 7, to: 8},
-      {from: 8, to: 9},
-      {from: 8, to: 10},
-      {from: 10, to: 11},
-      {from: 11, to: 12},
-      {from: 12, to: 13},
-      {from: 13, to: 14},
+          {from: 1, to: 2},
+          {from: 2, to: 3},
+          {from: 2, to: 4},
+          {from: 4, to: 5},
+          {from: 4, to: 10},
+          {from: 4, to: 6},
+          {from: 6, to: 7},
+          {from: 7, to: 8},
+          {from: 8, to: 9},
+          {from: 8, to: 10},
+          {from: 10, to: 11},
+          {from: 11, to: 12},
+          {from: 12, to: 13},
+          {from: 13, to: 14},
       ];
-
-
-
 
       // create a network
       const graph = {
@@ -125,18 +124,28 @@ class GraphNet extends Component {
       };
 
       const options = {
-        nodes: {
-          borderWidth:4,
-          size:30,
-          color: {
-            border: '#222222',
-            background: '#666666'
+          nodes: {
+              borderWidth: 4,
+              size: 30,
+              color: {
+                  border: '#222222',
+                  background: '#666666'
+              },
+              font: {color: '#eeeeee'},
+              shadow: true
           },
-          font:{color:'#eeeeee'}
-        },
-        edges: {
-          color: 'lightgray'
-        }
+          edges: {
+              color: 'lightgray',
+              smooth:{
+                  forceDirection: "none"
+              }
+          },
+          physics: {
+              minVelocity: 0.75,
+              solver: "repulsion",
+              timestep: 0.33,
+              stabilization: {iterations: 150}
+          }
       }
 
       const { classes } = this.props;
@@ -166,6 +175,13 @@ class GraphNet extends Component {
               </div>
               <div className={classes.section} style={{background:'grey',height:800}} >
                 <Graph graph={graph} options={options} events={events} style={{ height: "640px" }} />
+              </div>
+              <div className={classes.section} style={{color:'black'}}>
+                <h3>Users:
+                    <ul>
+                        {allusers.map(x => <li>{x.username}</li>)}
+                    </ul>
+                </h3>
               </div>
           </div>
       );
@@ -204,13 +220,15 @@ const mapStateToProps = state => {
     console.log("GraphNet mapstatetoprops",state);
   return {
         isAuth: state.raven.authenticated,
-        username: state.raven.username
+        username: state.raven.username,
+        all_users: state.user.all_users,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getProfileFetch: () => dispatch(getProfileFetch()),
-  getUser: () => dispatch(fetchUserProfile("temp"))
+    getProfileFetch: () => dispatch(getProfileFetch()),
+    getUser: () => dispatch(fetchUserProfile("cll58")),
+    getAllUsers: () => dispatch(fetchAllUsers())
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

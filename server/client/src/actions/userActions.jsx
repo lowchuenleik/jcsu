@@ -1,5 +1,19 @@
 import actionTypes from '../constants/actionTypes';
 
+function accomReceived(accom){
+    return {
+        type: actionTypes.ACCOMMODATION_RECEIVED,
+        accommodation: accom
+    }
+}
+
+function subjectReceived(subject){
+    return {
+        type: actionTypes.SUBJECT_RECEIVED,
+        subject: subject
+    }
+}
+
 function userReceived(user){
     return {
         type: actionTypes.USER_RECEIVED,
@@ -8,10 +22,10 @@ function userReceived(user){
     }
 }
 
-function allUsersReceived(user){
+function allUsersReceived(users){
     return {
         type: actionTypes.ALL_USERS_RECEIVED,
-        user_list: user
+        user_list: users
     }
 }
 
@@ -32,9 +46,9 @@ export function submitUser(data){
 
 export function fetchAllUsers(){
     return dispatch => {
-        return fetch(`/user`)
+        return fetch(`/student`)
         .then( (response) => response.json() )
-        .then( (data) => dispatch(allUsersReceived(data.data)))
+        .then( (data) => {console.log("fetchallusers",data);dispatch(allUsersReceived(data.data))})
         .catch( (e) => console.log(e) );
     }
 }
@@ -47,6 +61,24 @@ export function fetchUserProfile(username){
         //Data is defined in the rest api json thingy.
         .then( (data) => {console.log(data);console.log("in actions ");dispatch(userReceived(data.data))})
         //Catch is in the case of any errors and whatnot.
+        .catch( (e) => {console.log(e);console.log(username)} );
+    }
+}
+
+export function fetchUserSubject(username){
+    return dispatch => {
+        return fetch(`/student/${username}`)
+        .then( (response) => response.json() )
+        .then( (data) => {console.log("fetchusersubject",data.data);dispatch(subjectReceived(data.data.subject_name))})
+        .catch( (e) => {console.log(e);console.log(username)} );
+    }
+}
+
+export function fetchUserAccom(username){
+    return dispatch => {
+        return fetch(`/student/${username}`)
+        .then( (response) => response.json() )
+        .then( (data) => {dispatch(accomReceived(data.data.accom_name))})
         .catch( (e) => {console.log(e);console.log(username)} );
     }
 }
