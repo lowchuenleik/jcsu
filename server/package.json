@@ -31,5 +31,10 @@
     "passport": "^0.4.0",
     "passport-raven": "^2.0.0",
     "react-graph-vis": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-webpack": "^0.11.1",
+    "eslint-plugin-import": "^2.18.2"
   }
 }

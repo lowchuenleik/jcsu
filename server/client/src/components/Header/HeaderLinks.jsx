@@ -29,7 +29,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // @material-ui/icons
-import { Apps, CloudDownload } from "@material-ui/icons";
+import { Apps, ChatBubbleOutlineTwoTone } from "@material-ui/icons";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
@@ -44,7 +44,7 @@ function HeaderLinks({ ...props }) {
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
-          buttonText="Components"
+          buttonText="Temporary"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
@@ -52,10 +52,10 @@ function HeaderLinks({ ...props }) {
           buttonIcon={Apps}
           dropdownList={[
             <Link to="/" className={classes.dropdownLink}>
-              All components
+              Test-dropdown
             </Link>,
             <a
-              href="https://creativetimofficial.github.io/material-kit-react/#/documentation?ref=mkr-navbar"
+              href="https://jcsu.jesus.cam.ac.uk"
               target="_blank"
               className={classes.dropdownLink}
             >
@@ -66,12 +66,12 @@ function HeaderLinks({ ...props }) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button
-          href="https://www.creative-tim.com/product/material-kit-react?ref=mkr-navbar"
+          href="https://www.omfgdogs.com/"
           color="transparent"
           target="_blank"
           className={classes.navLink}
         >
-          <CloudDownload className={classes.icons} /> Download
+          <ChatBubbleOutlineTwoTone className={classes.icons} /> Dogs
         </Button>
       </ListItem>
       <ListItem className={classes.listItem}>
@@ -87,7 +87,7 @@ function HeaderLinks({ ...props }) {
           classes={{ tooltip: classes.tooltip }}
         >
           <Button
-            href="https://twitter.com/CreativeTim?ref=creativetim"
+            href="https://twitter.com/JesusCollegeCam"
             target="_blank"
             color="transparent"
             className={classes.navLink}
@@ -105,7 +105,7 @@ function HeaderLinks({ ...props }) {
         >
           <Button
             color="transparent"
-            href="https://www.facebook.com/CreativeTim?ref=creativetim"
+            href="https://www.facebook.com/groups/727393121053072/"
             target="_blank"
             className={classes.navLink}
           >
@@ -122,7 +122,7 @@ function HeaderLinks({ ...props }) {
         >
           <Button
             color="transparent"
-            href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
+            href="https://www.instagram.com/jesuscollegecam/"
             target="_blank"
             className={classes.navLink}
           >

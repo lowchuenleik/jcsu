@@ -58,7 +58,7 @@ class Grid extends Component {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <i className="fas fa-play" />
+                      <i className="fas fa-globe" />
                       More info
                     </Button>
                   </GridItem>
@@ -70,7 +70,7 @@ class Grid extends Component {
                 <TeamSection />
                 <GraphNet />
                 <UserProfile />
-                <News />
+                {/*<News />*/}
               </div>
             </div>
             <Footer />

@@ -1,0 +1,13 @@
+"settings": {
+  "import/resolver": {
+    "alias" : {
+      "map" : [
+        ["@components","./src/components/"]
+      ],
+      "extensions": [".js"]
+    },
+    "node": {
+      "moduleDirectory": ["node_modules", "src/"]
+    }
+  }
+}
