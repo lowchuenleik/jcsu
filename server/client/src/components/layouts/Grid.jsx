@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import {TempDel} from '../containers/TempDel'
 
 // core components
 import Header from "components/Header/Header.jsx";
@@ -71,6 +72,7 @@ class Grid extends Component {
                 <GraphNet />
                 <UserProfile />
                 {/*<News />*/}
+                <TempDel/>
               </div>
             </div>
             <Footer />

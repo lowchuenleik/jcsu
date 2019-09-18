@@ -1,6 +1,7 @@
 import requests
 import csv
 import json
+from pprint import pprint
 
 '''
 General structure of this script will be:
@@ -42,6 +43,7 @@ test_accom_data = {
 #     for row in reader:
 #         temp.append(row)
 
+'''
 # Accommodations post
 with open('accom.csv', mode='r', encoding='utf-8-sig') as csvfile:
     dict = csv.DictReader(csvfile)
@@ -63,4 +65,19 @@ with open('subjects.csv', mode='r', encoding='utf-8-sig') as csvfile:
             newdict[key.lower()] = temp[key]
         newdict['students'] = []
         requests.post('http://localhost:5000/subject', data=newdict)
+'''
 
+# Fresher post
+with open('freshers.csv', mode='r', encoding='utf-8-sig') as csvfile:
+    dict = csv.DictReader(csvfile)
+    subject_request = requests.get('http://localhost:5000/subject')
+    subjects = json.loads(subject_request.content)["data"]
+    subject_map = {x['name']: x['_id'] for x in subjects}
+    for x in dict:
+        temp = json.loads(json.dumps(x))
+        newdict = {}
+        for key in temp.keys():
+            newdict[key.lower()] = temp[key]
+        newdict['name'] = newdict['name'].strip()
+        newdict['subject'] = subject_map[newdict['subject'].strip()]
+        requests.post('http://localhost:5000/student', data=newdict)

@@ -60,7 +60,7 @@ class Housemates extends Component{
                 <GridItem xs={12} sm={12} md={4}>
                     <img
                         alt="..."
-                        src={require("assets/img/faces/cll58.png")}
+                        src={require("assets/img/faces/cll58.jpg")}
                         className={navImageClasses}
                         />
                     <img

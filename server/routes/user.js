@@ -70,6 +70,25 @@ router.get('/:username', function(req, res, next){
                 })
             })
         }
+
+        const username = req.params.username;
+
+        userController.find({username:username}, function(err, results){
+            if(err){
+                console.log(err);
+                res.json({
+                    success: 0,
+                    error: err
+                });
+                return;
+            }
+            res.json({
+                success: 1,
+                data: results
+            });
+        });
+
+        /*
         if (result.length > 0) {
 
             Promise.all([retrieveAccomName(result[0].accommodation), retrieveSubjectName(result[0].subject)])
@@ -95,6 +114,7 @@ router.get('/:username', function(req, res, next){
                 data: result
             });
         }
+        */
         // if(err){
         //     console.log(err);
         //     res.status(500).json({

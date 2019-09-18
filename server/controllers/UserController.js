@@ -14,9 +14,9 @@ module.exports = {
     },
 
     find: function(params, callback){
-        console.log(params);
+        console.log("PARAMS in UserController",params);
         //Note the 2nd argument is what to return from finding it!
-        User.find(params,'id username subject accommodation', function(err, results){
+        User.find(params,'name username subject accommodation', function(err, results){
             if(err){
                 callback(err, null);
                 return;

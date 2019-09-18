@@ -4,13 +4,15 @@ import ravenReducer from '../reducers/ravenReducer';
 import newsReducer from '../reducers/newsReducer';
 import authReducer from "../reducers/authReducer";
 import userReducer from "../reducers/userReducer";
+import subjectReducer from "../reducers/subjectReducer";
 
 const store = createStore(
   combineReducers({
       news: newsReducer,
       auth: authReducer,
       user: userReducer,
-      raven: ravenReducer
+      raven: ravenReducer,
+      subject: subjectReducer
   }),
   applyMiddleware(
       thunk

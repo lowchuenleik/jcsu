@@ -4,7 +4,12 @@ var initialState = {
     userProfile: {},
     users: [],
     userProfileLoading: true,
-    funState: "testinghere"
+    funState: "testinghere",
+    student:{
+      username: "None",
+      subject:{name:"No subject"},
+      accommodation:{name:"No accom"}
+    }
 }
 
 export default (state = initialState, action) => {

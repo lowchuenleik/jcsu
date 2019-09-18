@@ -31,3 +31,62 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes try_fadein {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+/*#wrapper {*/
+/*  display: flex;*/
+/*}*/
+
+#left{
+  float:left;
+  width:35%;
+  overflow:visible;
+  margin-right: 2em;
+}
+
+#right{
+  float:left;
+  width:60%;
+  overflow:hidden;
+}
+
+.wrapper {
+  color: black;
+  /*transition: opacity .15s ease-in;*/
+  opacity: 100;
+  display: inline-block;
+}
+
+.wrapper.changed {
+  opacity: 0;
+}
+
+.wrapper.lol {
+   animation: try_fadein .3s ease-in;
+}
+
+@media (max-width: 950px) {
+   #left { width: 100%; }
+}

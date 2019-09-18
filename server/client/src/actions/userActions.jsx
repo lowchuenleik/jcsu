@@ -69,7 +69,7 @@ export function fetchUserSubject(username){
     return dispatch => {
         return fetch(`/student/${username}`)
         .then( (response) => response.json() )
-        .then( (data) => {console.log("fetchusersubject",data.data);dispatch(subjectReceived(data.data.subject_name))})
+        .then( (data) => {console.log("fetchusersubject",data.data);dispatch(subjectReceived(data.data[0].subject.name))})
         .catch( (e) => {console.log(e);console.log(username)} );
     }
 }
@@ -78,7 +78,7 @@ export function fetchUserAccom(username){
     return dispatch => {
         return fetch(`/student/${username}`)
         .then( (response) => response.json() )
-        .then( (data) => {dispatch(accomReceived(data.data.accom_name))})
+        .then( (data) => {dispatch(accomReceived(data.data[0].accommodation.name))})
         .catch( (e) => {console.log(e);console.log(username)} );
     }
 }

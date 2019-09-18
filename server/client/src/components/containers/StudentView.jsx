@@ -17,7 +17,7 @@
 */
 import React,{ Component } from "react";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -36,7 +36,7 @@ import HeaderLinks from "../Header/HeaderLinks.jsx";
 import NavPills from "../NavPills/NavPills.jsx";
 import Parallax from "../Parallax/Parallax.jsx";
 
-import profile from "assets/img/faces/cll58.png";
+import profile from "assets/img/faces/cll58.jpg";
 
 import studio1 from "assets/img/examples/studio-1.jpg";
 import studio2 from "assets/img/examples/studio-2.jpg";
@@ -75,7 +75,7 @@ class ProfilePage extends Component {
               classes.imgFluid
         );
         console.log("PROPS IN STUDENT VIEW",this.props);
-        let username = this.props.student === undefined ? "No username": this.props.student.length === 0 ? "Zero length" : this.props.student[0].username;
+        let username = this.props.student === undefined ? "": this.props.student.length === 0 ? "Zero length" : this.props.student[0].username;
         let subject = this.props.subject === undefined ? "No subject" : this.props.subject;
         let accommodation = this.props.accommodation === undefined ? "No accommodation" : this.props.accommodation;
         console.log(username);

@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: new Date()
     },
-    id:{
+    name:{
         type: String,
     },
     subject: {type:mongoose.Schema.Types.ObjectId,
@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
         validate:{
             isAsync: true,
             validator: function(x) {
-                return FKHelper(mongoose.model('User',x));
+                return FKHelper(mongoose.model('User'),x);
             },
             message: 'Subject does not exist'
         }
@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
         validate:{
             isAsync: true,
             validator: function(x) {
-                return FKHelper(mongoose.model('User',x));
+                return FKHelper(mongoose.model('User'),x);
             },
             message: 'Accommodation does not exist'
         }
