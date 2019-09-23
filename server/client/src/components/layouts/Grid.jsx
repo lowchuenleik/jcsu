@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import {TempDel} from '../containers/TempDel'
+import landingPageStyle from "../../assets/jss/material-kit-react/views/landingPage"
 
 // core components
 import Header from "components/Header/Header.jsx";
@@ -16,8 +16,6 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
 import GraphNet from "../containers/GraphNet";
-
-import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 import TeamSection from "../../views/LandingPage/Sections/TeamSection.jsx";
 
@@ -72,7 +70,6 @@ class Grid extends Component {
                 <GraphNet />
                 <UserProfile />
                 {/*<News />*/}
-                <TempDel/>
               </div>
             </div>
             <Footer />

@@ -24,6 +24,7 @@ class GraphNet extends Component {
           details:{},
           isAuth: false,
           network: null,
+          nodes: [],
         };
       this.setNetworkInstance = this.setNetworkInstance.bind(this);
     }
@@ -52,6 +53,9 @@ class GraphNet extends Component {
         history.push('/');
     }
 
+    componentWillMount(){
+        this.setState({nodes:[]})
+    }
     componentDidMount() {
         const params = new URLSearchParams(window.location.search);
         const loggedin = params.get('loggedin');
@@ -116,41 +120,19 @@ class GraphNet extends Component {
 
     render (){
 
-        let nodes = [
-            {id: 1,  shape: 'circularImage', image: require("assets/img/faces/1.jpg")},
-            {id: 2,  shape: 'circularImage', image: require("assets/img/faces/cll58.jpg")},
-            {id: 3,  shape: 'circularImage', image: DIR + 'christian.jpg'},
-            {id: 4,  shape: 'circularImage', image: DIR + 'kendall.jpg', label:"Helloo"},
-            {id: 5,  shape: 'circularImage', image: DIR + 'marc.jpg'},
-            {id: 6,  shape: 'circularImage', image: DIR + 'avatar.jpg'},
-        ];
+        const nodes = [];
 
-        // create connections between people
-        // value corresponds with the amount of contact between two people
-        let edges = [
-            {from: 1, to: 2},
-            {from: 2, to: 3},
-            {from: 2, to: 4},
-            {from: 4, to: 5},
-            {from: 4, to: 10},
-            {from: 4, to: 6},
-            {from: 6, to: 7},
-            {from: 7, to: 8},
-            {from: 8, to: 9},
-            {from: 8, to: 10},
-            {from: 10, to: 11},
-            {from: 11, to: 12},
-            {from: 12, to: 13},
-            {from: 13, to: 14},
-        ];
-
+        // let nodes = this.state.nodes;
+        let edges = [];
         let new_edges = [];
 
         let allusers = this.props.all_users === undefined ? [{username:"broken"}] : this.props.all_users;
         let username_here = this.props.username === undefined ? "none" : this.props.username;
 
+        let random_edge_flag = false;
+
         //A crude check for complete loading and save the effort otherwise?
-        if (allusers.length >= 100 && allusers[100].username !== undefined){
+        if (true){
 
             let all_subjects = this.props.all_subjects;
             let subject_mapping = {};
@@ -169,10 +151,37 @@ class GraphNet extends Component {
             });
 
             //Iterate over each subject in subject mapping now and crudely do some graph connecting
+            console.log("ALLSUBJECT UNIQUE CHECK",(new Set(all_subjects)).length,all_subjects.length);
             all_subjects.forEach(function(subject,index){
                 //Now operate on a cluster singly, with each cluster being a bunch of users
                 let usernodes = subject_mapping[subject.name];
-                for (let i=0;i<usernodes.length - 1;i++){
+
+                //Add a central non visible node
+                console.log("EXISTING NODES",nodes);
+
+                let random_edges = Math.floor(Math.random() * (1000))
+                let subj_node = {
+                    id: subject.name + index + random_edges,
+                    size:1,
+                }
+
+                //Dup checker, get all current node ids
+                let node_ids = []
+                nodes.map((val,ind)=>{node_ids.push(val.id)})
+                if (!node_ids.includes(subj_node.id)){
+                    nodes.push(subj_node)
+                } else{
+                    console.log("INCLUDES ALREADY, LOOK HERE", nodes)
+                }
+
+                for (let i=0;i<usernodes.length;i++){
+
+                    //Create an edge from center node to all
+                    edges.push({from:subject.name+index+random_edges,
+                        to: usernodes[i].username});
+
+                    if (i === usernodes.length - 1) break;
+                    
                     //Must have the primary line connecting them sequentially to ensure it's a connected graph
                     edges.push({from:usernodes[i].username,
                             to: usernodes[i+1].username,
@@ -180,31 +189,42 @@ class GraphNet extends Component {
                     usernodes[i].visited = true;
                     usernodes[i+1].visited = true;
 
-                    //Randomly choose how many additional edges to form
-                    let max = 3;
-                    let min = 0;
-                    let random_edges = Math.floor(Math.random() * (max - min) ) + min
-                    for (let j=0;j<=random_edges;j++){
-                        //Randomly choose one that's not the next or itself!
-                        let random_neighbour = Math.floor(Math.random() * (usernodes.length-1));
+                    if (random_edge_flag){
+                        //Randomly choose how many additional edges to form
+                        let max = 3;
+                        let min = 0;
+                        let random_edges = Math.floor(Math.random() * (max - min) ) + min
+                        for (let j=0;j<=random_edges;j++){
+                            //Randomly choose one that's not the next or itself!
+                            let random_neighbour = Math.floor(Math.random() * (usernodes.length-1));
 
-                        //if already visited then we want to move on to avoid causing repeated loopbacks
-                        if (usernodes[random_neighbour].visited){
-                            continue
+                            //if already visited then we want to move on to avoid causing repeated loopbacks
+                            if (usernodes[random_neighbour].visited){
+                                continue
+                            }
+
+                            // //Above check might invalidate the need for this...
+                            // //Cannot and don't want it to be the next guy or this guy itself
+                            // while (random_neighbour === i || random_neighbour === i+1){
+                            //     random_neighbour = Math.floor(Math.random() * (usernodes.length-1));
+                            // }
+
+                            //Add this new random edge.
+                            edges.push({from:usernodes[i].username,
+                                to: usernodes[random_neighbour].username,
+                                title: "Studies with"})
                         }
-
-                        // //Above check might invalidate the need for this...
-                        // //Cannot and don't want it to be the next guy or this guy itself
-                        // while (random_neighbour === i || random_neighbour === i+1){
-                        //     random_neighbour = Math.floor(Math.random() * (usernodes.length-1));
-                        // }
-
-                        //Add this new random edge.
-                        edges.push({from:usernodes[i].username,
-                            to: usernodes[random_neighbour].username,
-                            title: "Studies with"})
-                    }
+                    } 
                 }
+                try{
+                // Make round circles, link them back..
+                edges.push({from:usernodes[usernodes.length-1].username,
+                    to:usernodes[0].username});   
+                } catch (e){
+                    console.log("FAILED TO ROUND BACK; usernodes->",usernodes)
+                }
+
+
             });
 
             console.log('ALLUSERS',allusers);
@@ -218,80 +238,63 @@ class GraphNet extends Component {
                     temp_fix = require("assets/img/faces/1.jpg");
                 }
 
-                if (item.username === username_here){
-                    nodes.push({id:item.username,
-                        shape: 'circularImage',
-                        image: temp_fix,
-                        font: {
-                            color:"black",
-                            size:"20",
-                            face:"roboto"
-                        },
-                        size:100,
-                        label: `${item.username}`,
-                        already_linked: false,
-                        subject:item.subject.name});
-                        // accommodation:item.accommodation.name});
-                } else{
-                    nodes.push({id:item.username,
-                        shape: 'circularImage',
-                        image: temp_fix,
-                        font: {
-                            color:"black",
-                            size:"20",
-                            face:"roboto"
-                        },
-                        size:50,
-                        label: `${item.username}`,
-                        already_linked: false,
-                        subject:item.subject.name});
-                        // accommodation:item.accommodation.name});
-                }
+                let node_size = item.username === username_here ? 150 : 50;
+                nodes.push({id:item.username,
+                    shape: 'circularImage',
+                    image: temp_fix,
+                    font: {
+                        color:"black",
+                        size:"20",
+                        face:"roboto"
+                    },
+                    size: node_size,
+                    label: `${item.username}`,
+                    already_linked: false,
+                    subject:item.subject.name});
+                    // accommodation:item.accommodation.name});
 
             });
 
-            allusers.forEach(function (item, index) {
-                //Now we want to create the edges
-                //Note right now it will be a BIDIRECTIONAL graph
-                //Might be rather slow on rendering side. Could push this to backend
-                for (let i=index+1; i<allusers.length; i++){
-                    let other_item = allusers[i];
-                    // if (item.accommodation !== undefined && other_item.accommodation !== undefined && item.accommodation._id === other_item.accommodation._id){
-                    //     edges.push({
-                    //         from:item.username,
-                    //         to:other_item.username,
-                    //         color:"blue"
-                    //     })
-                    // }
-                    // if (item.subject !== undefined && other_item.subject !== undefined && item.subject._id === other_item.subject._id) {
-                    //     // let condition = this.isConnected(other_item,edges,allusers);
-                    //     console.log("ALREADY LINKED?",item.already_linked);
-                    //     if (!item.already_linked){
-                    //         edges.push({
-                    //             from: item.username,
-                    //             to: other_item.username,
-                    //             color: "red",
-                    //         })
-                    //         item.already_linked = true;
-                    //     }
-                    // }
-                }
+            // allusers.forEach(function (item, index) {
+            //     //Now we want to create the edges
+            //     //Note right now it will be a BIDIRECTIONAL graph
+            //     //Might be rather slow on rendering side. Could push this to backend
+            //     for (let i=index+1; i<allusers.length; i++){
+            //         let other_item = allusers[i];
+            //         if (item.accommodation !== undefined && other_item.accommodation !== undefined && item.accommodation._id === other_item.accommodation._id){
+            //             edges.push({
+            //                 from:item.username,
+            //                 to:other_item.username,
+            //                 color:"blue"
+            //             })
+            //         }
+            //         if (item.subject !== undefined && other_item.subject !== undefined && item.subject._id === other_item.subject._id) {
+            //             // let condition = this.isConnected(other_item,edges,allusers);
+            //             console.log("ALREADY LINKED?",item.already_linked);
+            //             if (!item.already_linked){
+            //                 edges.push({
+            //                     from: item.username,
+            //                     to: other_item.username,
+            //                     color: "red",
+            //                 })
+            //                 item.already_linked = true;
+            //             }
+            //         }
+            //     }
+            // });
 
 
-            });
-
-
-            //Recolor all edges linked to logged in user
-            edges.forEach(function(edge,index){
-                if (edge.from === username_here || edge.to === username_here){
-                    new_edges.push(Object.assign({},edge,{width:3,
-                        color:{color:'red',inherit:false,hover:'yellow'},
-                        title: "YOU STUDY WITH"
-                    }))
-                } else{
-                    new_edges.push(edge)
-                }
-            })
+            // //Recolor all edges linked to logged in user
+            // edges.forEach(function(edge,index){
+            //     if (edge.from === username_here || edge.to === username_here){
+            //         new_edges.push(Object.assign({},edge,{width:3,
+            //             color:{color:'red',inherit:false,hover:'yellow'},
+            //             title: "YOU STUDY WITH"
+            //         }))
+            //     } else{
+            //         new_edges.push(edge)
+            //     }
+            // })
 
         }
 
@@ -299,12 +302,12 @@ class GraphNet extends Component {
       // create a network
       const graph = {
         nodes: nodes,
-        edges: new_edges
+        edges: edges
       };
 
       const options = {
           nodes: {
-              borderWidth: 4,
+              borderWidth: 2,
               size: 30,
               color: {
                   border: '#222222',
@@ -323,12 +326,23 @@ class GraphNet extends Component {
               }
           },
           layout: {improvedLayout: false},
-          // physics: {
-          //     minVelocity: 0.75,
-          //     solver: "repulsion",
-          //     timestep: 0.33,
-          //     stabilization: {iterations: 150}
-          // }
+        //   physics: {
+        //     "repulsion": {
+        //         "springLength": 90,
+        //         "springConstant": 0.37,
+        //         "nodeDistance": 100,
+        //         "damping": 0.11
+        //       },
+        //       minVelocity: 0.75,
+        //       solver: "repulsion",
+        //       timestep: 0.33,
+        //       stabilization: {iterations: 150}
+        //   }
+          physics:{
+            "barnesHut": {
+                "avoidOverlap": 0.2
+              }
+          }
       };
 
       const { classes } = this.props;
@@ -425,5 +439,11 @@ const mapDispatchToProps = dispatch => ({
     getAllSubjects: () => dispatch(getAllSubjects()),
     getStudentsOfSubject: (subject) => dispatch(fetchStudentsOfSubject(subject))
 })
+
+GraphNet.defaultProps = {
+    all_users:[],
+    all_subjects:[],
+    username: "Testing",
+  }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

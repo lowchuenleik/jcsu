@@ -72,6 +72,11 @@
   overflow:hidden;
 }
 
+#gridface{
+  height:336px;
+  overflow:hidden;
+}
+
 .wrapper {
   color: black;
   /*transition: opacity .15s ease-in;*/
@@ -83,7 +88,7 @@
   opacity: 0;
 }
 
-.wrapper.lol {
+.wrapper.fade {
    animation: try_fadein .3s ease-in;
 }
 

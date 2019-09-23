@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import Footer from "../Footer/Footer.jsx";
+import classNames from "classnames";
+import Header from "../Header/Header.jsx";
+import Parallax from "../Parallax/Parallax.jsx";
+import HeaderLinks from "../Header/HeaderLinks.jsx";
 
 class Layout extends Component {
     render() {
-        return (<div> {this.props.children} </div>)
-    // return (
-    //     <div>
-    //         <div>
-    //             <h1>MadOwlNews.com - Breaking news about Mad Owls</h1>
-    //         </div>
-    //         <div>
-    //             <ul>
-    //                 <li><Link to={'/'}>Home</Link></li>
-    //                 <li><Link to={'/about'}>About</Link></li>
-    //             </ul>
-    //             { this.props.children }
-    //         </div>
-    //     </div>
-    //     );
+        const { classes, ...rest } = this.props;
+        return (
+        <div>
+            <Header
+                color="transparent"
+                brand="JCSU 2019"
+                rightLinks={<HeaderLinks />}
+                fixed
+                changeColorOnScroll={{
+                height: 200,
+                color: "white"
+                }}
+                {...rest}
+            />
+            <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+            <div>
+                { this.props.children }
+            </div>
+            <Footer />
+        </div>
+        )
     }
 }
 

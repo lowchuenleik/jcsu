@@ -13,6 +13,7 @@ import NewsItemDetail from './components/presentation/NewsItemDetail';
 import NewsArticle from "./components/containers/NewsArticle";
 import NewsSubmit from "./components/containers/NewsSubmit";
 import history from "./history";
+import All from "./components/containers/All"
 
 import "assets/scss/material-kit-react.scss?v=1.7.0";
 
@@ -21,15 +22,16 @@ class App extends Component {
     return (
         <Provider store={store}>
             <Router history = {history}>
+                <Route path="/" component={Grid} exact />
                 <Layout>
-                    {/* <Route exact path="/" component={Grid} /> */}
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>
                     <Route path='/submit' component={NewsSubmit}/>
                     <Route path='/login' component={Authentication}/>
+                    <Route exact path='/all' component={All} />
                     <Route path='/user/:id' component={StudentView}/>
-                    <Route path="/" component={Grid} exact />
                 </Layout>
+                
             </Router>
         </Provider>
        );

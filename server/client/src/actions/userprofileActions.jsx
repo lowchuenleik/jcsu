@@ -30,7 +30,7 @@ export function submitNewsStory(data){
     }
 }
 
-export function fetchNews(){
+export function fetchUserProfile(){
     return dispatch => {
         return fetch(`/news`)
         .then( (response) => response.json() )

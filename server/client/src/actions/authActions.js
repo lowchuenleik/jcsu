@@ -93,7 +93,7 @@ export function ravenLogin(){
     const temp = "https://raven.cam.ac.uk/auth/authenticate.html?ver=3&url=http%3A%2F%2Flocalhost%3A5000%2Fravenlogin"
     return dispatch => {
         // return fetch(proxyurl+'http://localhost:3000/ravenlogin', {
-        return fetch(temp, {
+        return fetch(proxyurl+temp, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
