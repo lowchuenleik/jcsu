@@ -67,12 +67,11 @@ class Grid extends Component {
             <div className={classNames(classes.main, classes.mainRaised)}>
               <div className={classes.container}>
                 <TeamSection />
-                <GraphNet />
+                <GraphNet style={{marginTop:"-100px"}}/>
                 <UserProfile />
                 {/*<News />*/}
               </div>
             </div>
-            <Footer />
           </div>
         )
     }

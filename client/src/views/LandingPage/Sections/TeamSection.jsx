@@ -64,7 +64,7 @@ class TeamSection extends React.Component {
                 </h4>
                 <CardBody>
                   <p className={classes.description}>
-                    I’m <a href="https://jcsu.jesus.cam.ac.uk/committee/jcsu-committee-2/president">Sorcha</a>
+                    I’m <a href="https://jcsu.jesus.cam.ac.uk/committee/jcsu-committee-2/president">Sorcha</a>, 
                     and I am in my second year studying
                     Spanish and Latin. As your president, I represent
                     our student body and make sure that our voices

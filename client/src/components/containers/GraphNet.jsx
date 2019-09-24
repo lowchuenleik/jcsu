@@ -11,6 +11,8 @@ import {fetchUserProfile,fetchAllUsers} from "../../actions/userActions";
 import { fetchStudentsOfSubject,getAllSubjects } from "../../actions/subjectActions";
 
 import UserProfile from "./UserProfile";
+import { Link } from "react-router-dom";
+
 
 import Prim from '../../constants/Prim'
 
@@ -127,7 +129,7 @@ class GraphNet extends Component {
         let new_edges = [];
 
         let allusers = this.props.all_users === undefined ? [{username:"broken"}] : this.props.all_users;
-        let username_here = this.props.username === undefined ? "none" : this.props.username;
+        let username_here = this.props.username === undefined ? "None" : this.props.username;
 
         let random_edge_flag = false;
 
@@ -369,12 +371,22 @@ class GraphNet extends Component {
           <div>
               <div className={classes.section} style={{paddingTop:0}}>
                 <h1 className={classes.title}>Logged in as: {this.props.username}</h1>
+                <Link to="/all">
+                    <Button
+                        color="primary"
+                        size="lg"
+                        >
+                        Grid
+                        <i style={{display:'inline-block',marginLeft:".5em"}} className="fas fa-th" />
+                    </Button>
+                </Link>
                 <Button
                   color="primary"
+                  size="lg"
                   onClick={this.logout.bind(this)}>
                   Logout
                   <i style={{display:'inline-block',marginLeft:".5em"}} className="fas fa-sign-out-alt fa-fw" />
-              </Button>
+                </Button>
               </div>
               <div className={classes.section} style={{background:'white',height:800,boxShadow: "5px 10px 18px #888888"}} >
                 <Graph graph={graph}
@@ -443,7 +455,7 @@ const mapDispatchToProps = dispatch => ({
 GraphNet.defaultProps = {
     all_users:[],
     all_subjects:[],
-    username: "Testing",
+    username: "None aaaaa",
   }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

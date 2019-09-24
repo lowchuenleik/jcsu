@@ -7,16 +7,11 @@ import Card from "../Card/Card";
 
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 import teamStyle from "../../assets/jss/material-kit-react/views/landingPageSections/teamStyle";
 
 import { connect } from 'react-redux';
-import { fetchNews } from "../../actions/newsActions";
 
-import team1 from "assets/img/faces/sorcha.png";
-
-import { CSSTransitionGroup } from 'react-transition-group';
+import { fetchStudentsOfSubject,getAllSubjects } from "../../actions/subjectActions";
 import classNames from "classnames";
 
 class UserProfile extends Component {
@@ -43,6 +38,17 @@ class UserProfile extends Component {
         // Lol whaat
 
         wrapper.classList.add('fade');
+
+        console.log("COMP UPDATE IN USER PROFILE",this.props,prevProps);
+        let temp = {_id:"EBEGINNIN"};
+        if (prevProps.selected.username){
+            temp._id = "beginning"
+        } else{
+            temp._id = prevProps.selected[0]._id;;
+        }
+        if (this.props.selected[0]._id !== temp._id && this.props.selected[0].subject._id !== "None"){
+            this.props.getStudentsOfSubject(this.props.selected[0].subject._id)
+        }
     }
 
     render(){
@@ -61,6 +67,13 @@ class UserProfile extends Component {
             }
         }
 
+        let related_by_subject = this.props.students_by_subject.filter(function(student){
+            if (student.username === selected_user.username){
+                return false
+            }
+            return true
+        });
+
         const imageClasses = classNames(
           classes.imgRaised,
           classes.imgRoundedCircle,
@@ -68,53 +81,24 @@ class UserProfile extends Component {
         );
 
         console.log("SELECTED USER",selected_user);
+        console.log("RELATED BY SUBJECT USERS",related_by_subject);
 
         return (
 
-        // <div style={{color:"black"}} id="wrapper" className="wrapper">
-            /* <div id="left">
-                <img src={require(`assets/img/faces/${selected_user.username}.jpg`)} alt="..." className={imageClasses} id="userprofile_image" style={{height:"350px",
-                    width:"350px",
-                    boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"}} />
-            </div>
-              <div id="right" style={{paddingTop:"20px"}}>
-                <h2 className={classes.cardTitle} style={{display:"inline-block",
-                whiteSpace:"pre"}}>
-                    <br />
-                    {selected_user.name}    |&nbsp;&nbsp;&nbsp;
-                    <br />
-                </h2>
-                <h4 style={{display:"inline-block"}}><i >{selected_user.username}</i></h4>
-                <h3 className={classes.title}>
-                    Studying: {selected_user.subject.name}
-                    <strong style={{display:"block"}}>
-                    </strong>
-                </h3>
-                  <h5>
-                      {selected_user.subject.description}
-                  </h5>
-              </div>
 
-            <Card plain style={{padding:"1rem",margin:"2em"}}>
-                <CardBody>
-                    <h2 className={classes.title}> User Profile View </h2>
-                    <h3 className={classes.cardTitle}>
-                        Selected: {selected_user.username}
-                    </h3>
-                </CardBody>
-            </Card> */
-        // </div>
-        <div style={{paddingBottom:"50px"}} id="wrapper" >
+        <div style={{paddingBottom:"50px"}} id='wrapper' className="wrapper" >
             <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
-                    <img src={require(`assets/img/faces/${selected_user.username}.jpg`)} alt="..." className={imageClasses} id="userprofile_image" style={{height:"350px",
-                            width:"350px",
-                            boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"}} />
+                    <img src={require(`assets/img/faces/${selected_user.username}.jpg`)} alt="..." className={imageClasses} id="userprofile_image" 
+                            style={{
+                                width:"500px",
+                                boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"
+                            }} />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={8}>
                     <h2 className={classes.cardTitle} style={{whiteSpace:"pre"}}>
                         <br />
-                        {selected_user.name}    |&nbsp;&nbsp;&nbsp;
+                        {selected_user.name}    |&nbsp;&nbsp;&nbsp;&nbsp;
                         {selected_user.username}
                         <br />
                     </h2>
@@ -129,6 +113,36 @@ class UserProfile extends Component {
                     </h5>
                 </GridItem>
             </GridContainer>
+            <br>
+            </br>
+            <h2 className={classes.cardTitle} style={{whiteSpace:"pre",marginTop:"20px"}}>Subject-mates:</h2>
+            <GridContainer justify='center'>
+                {
+                    related_by_subject.map((user,index)=>{
+                        return(
+                        <GridItem xs={12} sm={12} md={3}>
+                            <Card plain style={{alignItems:"center",
+                        textAlign:"center"}}>
+
+                                <img src={require(`assets/img/faces/${user.username}.jpg`)} 
+                                className={imageClasses}
+                                id="gridface" 
+                                style={{boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"}} />
+                            <CardBody>
+                                <h4 className={classes.cardTitle}>
+                                    {user.name}
+                                    <br />
+                                </h4>
+                                <p className={classes.description}>
+                                    {user.subject.name} | Jesus College
+                                </p>
+                            </CardBody>
+                        </Card>
+                        </GridItem>
+                        )
+                    })
+                }
+                </GridContainer>
         </div>
         )
     }
@@ -137,8 +151,25 @@ class UserProfile extends Component {
 const mapStateToProps = state => {
     return {
         selected: state.user.student,
-        news: state.news.news
+        news: state.news.news,
+        students_by_subject: state.subject.users
     }
 }
 
-export default connect(mapStateToProps,null)(withStyles(teamStyle)(UserProfile))
+const mapDispatchToProps = dispatch => ({
+    getStudentsOfSubject: (subject) => dispatch(fetchStudentsOfSubject(subject))
+})
+
+UserProfile.defaultProps = {
+    subject:"None",
+    accommodation:"None",
+    username: "None",
+    selected:[{username:"No_username",
+                name: "John Appleseed",
+                subject:{name:"No subject",_id:"None"},
+                accommodation:{name:"No accom"},
+                _id:"None"
+            },{temp:"tmep"}]
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(UserProfile))

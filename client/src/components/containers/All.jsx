@@ -70,7 +70,7 @@ class All extends Component {
                                     <br />
                                 </h4>
                                 <p className={classes.description}>
-                                    {user.subject.name} | Planet Earth
+                                    {user.subject.name} | Jesus College
                                 </p>
                             </CardBody>
                         </Card>

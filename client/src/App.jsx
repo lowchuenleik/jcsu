@@ -22,7 +22,7 @@ class App extends Component {
     return (
         <Provider store={store}>
             <Router history = {history}>
-                <Route path="/" component={Grid} exact />
+                <Route exact path="/" component={Grid}  />
                 <Layout>
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>
