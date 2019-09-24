@@ -17,7 +17,8 @@ with open('freshers.csv', mode='r', encoding='utf-8-sig') as csvfile:
             crsid.append(newdict)
 
 # Note that the freshers csv list is ALREADY in alphabetical order, but we sort it again to be safe.
-crsid.sort(key=lambda a: a['last name'])
+# crsid.sort(key=lambda a: a['last name'])
+# Commented out as it breaks script as the pics are NOT alphabetical. von and te are at end.
 
 temp = []
 
@@ -28,7 +29,10 @@ def rename(directory, pattern):
         title,ext = os.path.splitext(os.path.basename(pathAndFilename))
         temp.append(title)
 
+
+
         os.rename(pathAndFilename,
                   os.path.join(directory, crsid[index]['username'] + ext))
 
 rename(r'/Users/clow/Desktop/jcsu/scripts/final',r'*.jpg')
+
