@@ -15,7 +15,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
-import GraphNet from "../containers/GraphNet";
+import TestGraphNet from "../containers/TestGraphNet";
 
 import TeamSection from "../../views/LandingPage/Sections/TeamSection.jsx";
 
@@ -24,7 +24,7 @@ import UserProfile from 'components/containers/UserProfile';
 
 const dashboardRoutes = [];
 
-class Grid extends Component {
+class TestGrid extends Component {
     render() {
         const { classes, ...rest } = this.props;
         return (
@@ -47,7 +47,7 @@ class Grid extends Component {
                   <GridItem xs={12} sm={12} md={6}>
                     <h1 className={classes.title}>JCSU 2019</h1>
                     <h4>
-                      Welcome to Jesus College. Come and get to know your fellow freshers.
+                      Welcome to (Test) Jesus College. Come and get to know your fellow freshers.
                     </h4>
                     <br />
                     <Button
@@ -67,9 +67,8 @@ class Grid extends Component {
             <div className={classNames(classes.main, classes.mainRaised)}>
               <div className={classes.container}>
                 <TeamSection />
-                <GraphNet style={{marginTop:"-200px"}}/>
+                <TestGraphNet style={{marginTop:"-200px"}}/>
                 <UserProfile />
-                {/*<News />*/}
               </div>
             </div>
           </div>
@@ -77,4 +76,4 @@ class Grid extends Component {
     }
 }
 
-export default withStyles(landingPageStyle)(Grid);
+export default withStyles(landingPageStyle)(TestGrid);

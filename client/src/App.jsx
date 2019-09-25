@@ -5,6 +5,7 @@ import { Route, Router } from 'react-router-dom';
 import store from './stores/store';
 import Home from './components/layouts/Home';
 import Grid from './components/layouts/Grid';
+import TestGrid from './components/layouts/TestGrid';
 import Layout from "./components/layouts/Layout";
 import Authentication from "./components/containers/Authentication";
 import About from './components/layouts/About';
@@ -22,7 +23,8 @@ class App extends Component {
     return (
         <Provider store={store}>
             <Router history = {history}>
-                <Route exact path="/" component={Grid}  />
+                <Route exact path='/testgrid' component={TestGrid}  />
+                <Route exact path={["/","/testing"]} component={Grid}  />
                 <Layout>
                     <Route path="/about" component={About} exact />
                     <Route path='/news/:id' component={NewsArticle}/>
