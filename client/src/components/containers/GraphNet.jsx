@@ -39,20 +39,21 @@ class GraphNet extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log("Component did update! Here look at props, ",this.props);
-        this.props.getProfileFetch();
+        console.log("Component did update! Here look at props, ",this.props,prevProps);
         // if (prevProps.isAuth !== this.props.isAuth){
         //     this.setState(this.state);
         // }
-        // if (prevProps !== this.props){
+        // if (prevProps.isAuth !== this.props.isAuth || prevState.isAuth !== this.state.isAuth){
+        //     this.props.getProfileFetch();
         // }
-        console.log("ALL USERS : ",this.props.all_users);
     }
 
     logout(){
         localStorage.removeItem("token");
         this.setState({isAuth:false});
+        this.props.getProfileFetch();
         history.push('/');
+
     }
 
     componentWillMount(){
@@ -99,6 +100,12 @@ class GraphNet extends Component {
 
     triggerFetch(user){
           this.props.getUser(user);
+          console.log("TRIGGER FETCH props",this.props);
+          if (this.props.selected.length === 0){
+              return
+          }else if (Array.isArray(this.props.selected) && this.props.selected[0].subject._id !== "None"){
+            this.props.getStudentsOfSubject(this.props.selected[0].subject._id)
+        }
     }
 
     graphRescale(direction,scale,pointer){
@@ -127,14 +134,17 @@ class GraphNet extends Component {
         // let nodes = this.state.nodes;
         let edges = [];
         let new_edges = [];
+        let node_ids = [];
 
-        let allusers = this.props.all_users === undefined ? [{username:"broken"}] : this.props.all_users;
-        let username_here = this.props.username === undefined ? "None" : this.props.username;
+        let allusers = this.props.all_users;
+        let username_here =  this.props.username;
 
         let random_edge_flag = false;
 
+        let subj_node;
+
         //A crude check for complete loading and save the effort otherwise?
-        if (true){
+        if (allusers.length > 1){
 
             let all_subjects = this.props.all_subjects;
             let subject_mapping = {};
@@ -153,23 +163,24 @@ class GraphNet extends Component {
             });
 
             //Iterate over each subject in subject mapping now and crudely do some graph connecting
-            console.log("ALLSUBJECT UNIQUE CHECK",(new Set(all_subjects)).length,all_subjects.length);
             all_subjects.forEach(function(subject,index){
                 //Now operate on a cluster singly, with each cluster being a bunch of users
                 let usernodes = subject_mapping[subject.name];
 
-                //Add a central non visible node
-                console.log("EXISTING NODES",nodes);
-
-                let random_edges = Math.floor(Math.random() * (1000))
-                let subj_node = {
-                    id: subject.name + index + random_edges,
-                    size:1,
-                }
+                //Add a central node
+                let random_edges = Math.floor(Math.random() * (1000000));
+                subj_node = {
+                    id: subject.name + index,
+                    shape:'circle',
+                    color:"black",
+                    label: `${subject.name}`,
+                    font: {
+                        color:"white",
+                    },
+                };
 
                 //Dup checker, get all current node ids
-                let node_ids = []
-                nodes.map((val,ind)=>{node_ids.push(val.id)})
+                nodes.map((val,ind)=>{node_ids.push(val.id)});
                 if (!node_ids.includes(subj_node.id)){
                     nodes.push(subj_node)
                 } else{
@@ -179,17 +190,17 @@ class GraphNet extends Component {
                 for (let i=0;i<usernodes.length;i++){
 
                     //Create an edge from center node to all
-                    edges.push({from:subject.name+index+random_edges,
+                    edges.push({from:subject.name+index,
                         to: usernodes[i].username});
 
                     if (i === usernodes.length - 1) break;
                     
-                    //Must have the primary line connecting them sequentially to ensure it's a connected graph
-                    edges.push({from:usernodes[i].username,
-                            to: usernodes[i+1].username,
-                            title: "Studies with"});
-                    usernodes[i].visited = true;
-                    usernodes[i+1].visited = true;
+                    //Have the primary line connecting them sequentially to ensure it's a connected graph
+                    // edges.push({from:usernodes[i].username,
+                    //         to: usernodes[i+1].username,
+                    //         title: "Studies with"});
+                    // usernodes[i].visited = true;
+                    // usernodes[i+1].visited = true;
 
                     if (random_edge_flag){
                         //Randomly choose how many additional edges to form
@@ -218,18 +229,18 @@ class GraphNet extends Component {
                         }
                     } 
                 }
-                try{
-                // Make round circles, link them back..
-                edges.push({from:usernodes[usernodes.length-1].username,
-                    to:usernodes[0].username});   
-                } catch (e){
-                    console.log("FAILED TO ROUND BACK; usernodes->",usernodes)
-                }
+                // try{
+                // // Make round circles, link them back..
+                // edges.push({from:usernodes[usernodes.length-1].username,
+                //     to:usernodes[0].username});
+                // } catch (e){
+                //     console.log("FAILED TO ROUND BACK; usernodes->",usernodes)
+                // }
 
 
             });
 
-            console.log('ALLUSERS',allusers);
+            // console.log('ALLUSERS',allusers);
 
             allusers.forEach(function (item, index) {
                 //Creates the nodes
@@ -250,7 +261,7 @@ class GraphNet extends Component {
                         face:"roboto"
                     },
                     size: node_size,
-                    label: `${item.username}`,
+                    label: `${item.name}`,
                     already_linked: false,
                     subject:item.subject.name});
                     // accommodation:item.accommodation.name});
@@ -342,8 +353,8 @@ class GraphNet extends Component {
         //   }
           physics:{
             "barnesHut": {
-                "avoidOverlap": 0.2
-              }
+                "avoidOverlap": 0.5
+              },
           }
       };
 
@@ -388,7 +399,10 @@ class GraphNet extends Component {
                   <i style={{display:'inline-block',marginLeft:".5em"}} className="fas fa-sign-out-alt fa-fw" />
                 </Button>
               </div>
-              <div className={classes.section} style={{background:'white',height:800,boxShadow: "5px 10px 18px #888888"}} >
+              <div className={classes.section} style={{background:'white',
+                  height:800,
+                  boxShadow: "5px 10px 18px #888888",
+                  padding:"0px"}} >
                 <Graph graph={graph}
                        options={options}
                        events={events}
@@ -440,7 +454,8 @@ const mapStateToProps = state => {
         username: state.raven.username,
         all_users: state.user.all_users,
         all_subjects: state.subject.subject_list,
-        students_by_subject: state.subject.users
+        students_by_subject: state.subject.users,
+        selected: state.user.student,
   }
 }
 
@@ -453,9 +468,15 @@ const mapDispatchToProps = dispatch => ({
 })
 
 GraphNet.defaultProps = {
-    all_users:[],
+    all_users:[{username:"broken"}] ,
     all_subjects:[],
     username: "None aaaaa",
+    selected:[{username:"No_username",
+            name: "John Appleseed",
+            subject:{name:"No subject",_id:"None"},
+            accommodation:{name:"No accom"},
+            _id:"None"
+        },{temp:"tmep"}]
   }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(teamStyle)(GraphNet));

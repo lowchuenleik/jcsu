@@ -7,7 +7,7 @@ var initialState = {
     funState: "testinghere",
     student:{
       username: "None",
-      subject:{name:"No subject"},
+      subject:{name:"No subject",_id:"None"},
       accommodation:{name:"No accom"}
     }
 }

@@ -83,7 +83,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 passport.use(new Raven({
   audience: raven_passport_url,
   desc: 'JCSU Grid of Faces 2019',
-  msg: 'Enter your raven login details please',
+  msg: 'JCSU Grid of Faces 2019 auth',
   debug: false//process.env.NODE_ENV !== 'production'
 }, function (crsid, response, callback) {
   console.dir(response);

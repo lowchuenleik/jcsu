@@ -31,23 +31,36 @@ class UserProfile extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const wrapper = document.getElementById("wrapper");
-        wrapper.classList.remove('fade');
 
-        // Literal black magic to reset the animation
-        void wrapper.offsetWidth;
-        // Lol whaat
-
-        wrapper.classList.add('fade');
 
         console.log("COMP UPDATE IN USER PROFILE",this.props,prevProps);
         let temp = {_id:"EBEGINNIN"};
-        if (prevProps.selected.username){
-            temp._id = "beginning"
-        } else{
-            temp._id = prevProps.selected[0]._id;;
-        }
-        if (this.props.selected[0]._id !== temp._id && this.props.selected[0].subject._id !== "None"){
-            this.props.getStudentsOfSubject(this.props.selected[0].subject._id)
+        if (this.props.selected.length === 0 || prevProps.selected.length === 0) {
+            wrapper.classList.remove('fade');
+
+            // Literal black magic to reset the animation
+            void wrapper.offsetWidth;
+            // Lol whaat
+
+            wrapper.classList.add('fade');
+        } else {
+
+            if (prevProps.selected.username) {
+                temp._id = "beginning"
+            } else {
+                temp._id = prevProps.selected[0]._id;
+            }
+
+            if (this.props.selected[0]._id !== temp._id && this.props.selected[0].subject._id !== "None") {
+                wrapper.classList.remove('fade');
+
+                // Literal black magic to reset the animation
+                void wrapper.offsetWidth;
+                // Lol whaat
+
+                wrapper.classList.add('fade');
+                this.props.getStudentsOfSubject(this.props.selected[0].subject._id)
+            }
         }
     }
 
@@ -62,7 +75,7 @@ class UserProfile extends Component {
         } else{
             selected_user = {username:"No_username",
                 name: "John Appleseed",
-                subject:{name:"No subject"},
+                subject:{name:"No subject",_id:"None"},
                 accommodation:{name:"No accom"}
             }
         }
@@ -134,7 +147,9 @@ class UserProfile extends Component {
                                     <br />
                                 </h4>
                                 <p className={classes.description}>
+                                    <strong>
                                     {user.subject.name} | Jesus College
+                                    </strong>
                                 </p>
                             </CardBody>
                         </Card>
