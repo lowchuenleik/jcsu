@@ -120,6 +120,14 @@ class GraphNet extends Component {
             }
     }
 
+    initialScale(){
+        if(this.state.network!==null)//the limit you want to stop at
+            {
+                const scaleOption = { scale : 0.8,x:5000,y:5000 }; 
+                this.state.network.moveTo(scaleOption); //set this limit so it stops zooming out here
+            }
+    }
+
     isConnected(target,edges,nodes){
         return true;
     }
@@ -155,6 +163,16 @@ class GraphNet extends Component {
         console.log("GRPAHNET rednder\n\n\n,",this.state,this.props,temp_auth);
         let jesus_fresh = temp_auth;
 
+                
+        if(this.state.network !==null){
+            console.log("STAB STARTED")
+            let network = this.state.network;
+            network.once('startStabilizing', function() {
+                var scaleOption = { scale : 0.4,position:{x:800,y:800} }; 
+                network.moveTo(scaleOption); });
+        }
+
+
         //A crude check for complete loading and save the effort otherwise?
         if (allusers.length > 1){
 
@@ -180,15 +198,21 @@ class GraphNet extends Component {
                 let usernodes = subject_mapping[subject.name];
 
                 //Add a central node
-                let random_edges = Math.floor(Math.random() * (1000000));
+                let random_edges = Math.floor(Math.random() * (10000));
+                let space_replacer = subject.name.split(" ").join("\n");
+
+                let x_pos = index % 6;
+                let y_pos = Math.floor(index/6);
                 subj_node = {
                     id: subject.name + index,
                     shape:'circle',
                     color:"black",
-                    label: `${subject.name}`,
+                    label: `${space_replacer}`,
                     font: {
                         color:"white",
                     },
+                    title:"Subject",
+                    x:x_pos*250, y:y_pos*250
                 };
 
                 //Dup checker, get all current node ids
@@ -365,8 +389,11 @@ class GraphNet extends Component {
         //   }
           physics:{
             "barnesHut": {
-                "avoidOverlap": 0.5
+                "avoidOverlap": 0.5,
+                "springLength": 200
               },
+            timestep: 0.5,
+            stabilization: {iterations: 50}
           }
       };
 
@@ -387,6 +414,9 @@ class GraphNet extends Component {
           zoom: function (event) {
               let {direction,scale,pointer} = event;
               _this.graphRescale(direction,scale,pointer);
+          },
+          startStabilizing: function(event){
+              _this.initialScale();
           }
       };
 

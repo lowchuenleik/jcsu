@@ -33,6 +33,7 @@ class All extends Component {
 
     componentDidMount(){
         this.props.getAllUsers();
+        this.props.getProfileFetch();
     }
 
     render(){
@@ -58,7 +59,7 @@ class All extends Component {
                 {
                     allusers.map((user,index)=>{
                         return(
-                        <GridItem xs={12} sm={12} md={3}>
+                        <GridItem xs={4} sm={4} md={3}>
                             <Card plain style={{alignItems:"center",
                         textAlign:"center"}}>
 
@@ -72,7 +73,7 @@ class All extends Component {
                                     <br />
                                 </h4>
                                 <p className={classes.description}>
-                                    {user.subject.name} | Jesus College
+                                    {user.subject.name} | {user.username}
                                 </p>
                             </CardBody>
                         </Card>

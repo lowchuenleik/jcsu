@@ -116,6 +116,15 @@ class TestGraphNet extends Component {
 
         let subj_node;
 
+        if(this.state.network !==null){
+            console.log("STAB STARTED")
+            let network = this.state.network;
+            network.once('startStabilizing', function() {
+                var scaleOption = { scale : 0.4,position:{x:800,y:800} }; 
+                network.moveTo(scaleOption); });
+        }
+
+
         //A crude check for complete loading and save the effort otherwise?
         if (allusers.length > 1){
 
@@ -142,15 +151,17 @@ class TestGraphNet extends Component {
 
                 //Add a central node
                 let random_edges = Math.floor(Math.random() * (1000000));
+                let space_replacer = subject.name.split(" ").join("\n");
                 subj_node = {
                     id: subject.name + index,
                     shape:'circle',
                     color:"black",
-                    label: `${subject.name}`,
+                    label: `${space_replacer}`,
                     font: {
                         color:"white",
                     },
                 };
+
 
                 //Dup checker, get all current node ids
                 nodes.map((val,ind)=>{node_ids.push(val.id)});
@@ -250,8 +261,11 @@ class TestGraphNet extends Component {
           layout: {improvedLayout: false},
           physics:{
             "barnesHut": {
-                "avoidOverlap": 0.5
+                "avoidOverlap": 0.5,
+                "springLength": 200
               },
+            timestep: 0.5,
+            stabilization: {iterations: 50}
           }
       };
 

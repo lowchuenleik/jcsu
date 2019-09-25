@@ -142,15 +142,11 @@ class UserProfile extends Component {
                                 id="gridface" 
                                 style={{boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"}} />
                             <CardBody>
-                                <h4 className={classes.cardTitle}>
-                                    {user.name}
-                                    <br />
-                                </h4>
-                                <p className={classes.description}>
+                                <h4 className={classes.description}>
                                     <strong>
                                     {user.subject.name} | Jesus College
                                     </strong>
-                                </p>
+                                </h4>
                             </CardBody>
                         </Card>
                         </GridItem>
