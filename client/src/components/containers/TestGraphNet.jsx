@@ -152,6 +152,9 @@ class TestGraphNet extends Component {
                 //Add a central node
                 let random_edges = Math.floor(Math.random() * (1000000));
                 let space_replacer = subject.name.split(" ").join("\n");
+                
+                let x_pos = index % 6;
+                let y_pos = Math.floor(index/6);
                 subj_node = {
                     id: subject.name + index,
                     shape:'circle',
@@ -160,6 +163,8 @@ class TestGraphNet extends Component {
                     font: {
                         color:"white",
                     },
+                    title:"Subject",
+                    x:x_pos*250, y:y_pos*250
                 };
 
 
