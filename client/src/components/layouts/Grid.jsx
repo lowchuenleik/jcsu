@@ -65,9 +65,9 @@ class Grid extends Component {
               </div>
             </Parallax>
             <div className={classNames(classes.main, classes.mainRaised)}>
-              <div className={classes.container}>
+              <div className={classes.container} style={{width:"1500px"}}>
                 <TeamSection />
-                <GraphNet style={{marginTop:"-200px"}}/>
+                <GraphNet/>
                 <UserProfile />
                 {/*<News />*/}
               </div>

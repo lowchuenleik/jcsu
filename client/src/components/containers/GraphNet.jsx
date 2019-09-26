@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
 
+
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+
 import Graph from "react-graph-vis";
 import teamStyle from "../../assets/jss/material-kit-react/views/landingPageSections/teamStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -55,6 +62,7 @@ class GraphNet extends Component {
         this.props.getProfileFetch();
         history.push('/');
     }
+    
 
     componentWillMount(){
         this.setState({nodes:[]})
@@ -120,6 +128,13 @@ class GraphNet extends Component {
             }
     }
 
+    focusZoom(node_id){
+        console.log("ATTEMPTING TO FOCUS ON ",node_id,this.state.network);
+        if(this.state.network !== null){
+            this.state.network.focus(node_id,{scale:0.9});
+        }
+    }
+
     initialScale(){
         if(this.state.network!==null)//the limit you want to stop at
             {
@@ -153,7 +168,7 @@ class GraphNet extends Component {
 
         let subj_node;
 
-
+        let all_subjects = this.props.all_subjects;
         let allusernames = this.props.all_users.map((item)=>item.username);
 
         allusernames.push('broken','sk948');
@@ -164,19 +179,19 @@ class GraphNet extends Component {
         let jesus_fresh = temp_auth;
 
                 
-        if(this.state.network !==null){
-            console.log("STAB STARTED")
-            let network = this.state.network;
-            network.once('startStabilizing', function() {
-                var scaleOption = { scale : 0.4,position:{x:800,y:800} }; 
-                network.moveTo(scaleOption); });
-        }
+        // if(this.state.network !==null){
+        //     console.log("STAB STARTED")
+        //     let network = this.state.network;
+        //     network.once('startStabilizing', function() {
+        //         var scaleOption = { scale : 0.4,position:{x:800,y:800} }; 
+        //         network.moveTo(scaleOption); });
+        // }
 
 
         //A crude check for complete loading and save the effort otherwise?
         if (allusers.length > 1){
 
-            let all_subjects = this.props.all_subjects;
+            
             let subject_mapping = {};
 
             all_subjects.forEach(function(item,index){
@@ -204,7 +219,7 @@ class GraphNet extends Component {
                 let x_pos = index % 6;
                 let y_pos = Math.floor(index/6);
                 subj_node = {
-                    id: subject.name + index,
+                    id: subject.name,
                     shape:'circle',
                     color:"black",
                     label: `${space_replacer}`,
@@ -226,7 +241,7 @@ class GraphNet extends Component {
                 for (let i=0;i<usernodes.length;i++){
 
                     //Create an edge from center node to all
-                    edges.push({from:subject.name+index,
+                    edges.push({from:subject.name,
                         to: usernodes[i].username});
 
                     if (i === usernodes.length - 1) break;
@@ -441,10 +456,34 @@ class GraphNet extends Component {
                   <i style={{display:'inline-block',marginLeft:".5em"}} className="fas fa-sign-out-alt fa-fw" />
                 </Button>
               </div>
+              <div className={classes.section} style={{paddingTop:0}}>
+                  <h4><i>Pick a subject...</i> </h4>
+                {
+                        all_subjects.map((subject,index)=>{
+                            return(
+                            <Button
+                                style={{alignItems:"center",
+                                    textAlign:"center",
+                                    display:"inline-block"}}
+                                color="info"
+                                size="lg"
+                                onClick={()=>{this.focusZoom(subject.name)}}>
+                                {subject.name}
+                            </Button>
+                            )
+                        })
+                    }
+              {/* <GridContainer justify='center'>
+                <GridItem xs={4} sm={4} md={1}>
+              
+                    </GridItem>
+                </GridContainer> */}
+              </div>
               <div className={classes.section} style={{background:'white',
                   height:800,
                   boxShadow: "5px 10px 18px #888888",
                   padding:"0px"}} >
+                
                 <Graph graph={graph}
                        options={options}
                        events={events}
