@@ -25,7 +25,6 @@ class App extends Component {
         <Provider store={store}>
             <Router history = {history}>
                 <Switch>
-                    <Route exact path='/testgrid' component={TestGrid}  />
                     <Route exact path={["/","/testing"]} component={Grid}  />
                     <Layout>
                         <Route exact path="/about" component={About} />
