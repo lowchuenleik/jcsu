@@ -17,6 +17,7 @@ client/build
 /scripts/final
 # production
 /build
+/.idea
 
 # misc
 .DS_Store
