@@ -44,22 +44,26 @@ function HeaderLinks({ ...props }) {
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
-          buttonText="Temporary"
+          buttonText="Useful Files"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
           }}
           buttonIcon={Apps}
           dropdownList={[
-            <Link to="/" className={classes.dropdownLink}>
-              Test-dropdown
-            </Link>,
             <a
-              href="https://jcsu.jesus.cam.ac.uk"
+              href="https://jnet.jesus.cam.ac.uk/system/files/inline/images/files/UG%20Freshers'%20week%20timetable%202019(2).pdf"
               target="_blank"
               className={classes.dropdownLink}
             >
-              Documentation
+              Freshers Week Timetable
+            </a>,
+            <a
+              href="https://jnet.jesus.cam.ac.uk/system/files/inline/images/files/UG%20JCSU%20Freshers%20Handbook%20and%20JCSU%20guide%20final.pdf"
+              target="_blank"
+              className={classes.dropdownLink}
+            >
+              JCSU Handbook
             </a>
           ]}
         />

@@ -61,6 +61,10 @@ function Footer({ ...props }) {
                 About us
               </a>
             </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              To change your image or have it removed, please get in touch
+                <a href="mailto:jcsu-communications@jcsu.jesus.cam.ac.uk?Subject=Grid%20o'Faces" target="_top"> here</a>
+            </ListItem>
           </List>
         </div>
         <div className={classes.right}>

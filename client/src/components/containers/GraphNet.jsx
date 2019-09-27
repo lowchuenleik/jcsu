@@ -67,6 +67,7 @@ class GraphNet extends Component {
     componentWillMount(){
         this.setState({nodes:[]})
     }
+    
     componentDidMount() {
         const params = new URLSearchParams(window.location.search);
         const loggedin = params.get('loggedin');
@@ -168,6 +169,13 @@ class GraphNet extends Component {
 
         let subj_node;
 
+        // Hacky auth stuff lol
+
+        const params = new URLSearchParams(window.location.search);
+        const tester = params.get('tester');
+
+        let authentication = tester ? true : this.props.isAuth;
+
         let all_subjects = this.props.all_subjects;
         let allusernames = this.props.all_users.map((item)=>item.username);
 
@@ -176,7 +184,7 @@ class GraphNet extends Component {
         let temp_auth = allusernames.length === 1 ? true: allusernames.includes(this.props.username);
         console.log("In graphnet component mounting",this.props.username);
         console.log("GRPAHNET rednder\n\n\n,",this.state,this.props,temp_auth);
-        let jesus_fresh = temp_auth;
+        let jesus_fresh = tester ? true : temp_auth;
 
                 
         // if(this.state.network !==null){
@@ -227,7 +235,7 @@ class GraphNet extends Component {
                         color:"white",
                     },
                     title:"Subject",
-                    x:x_pos*250, y:y_pos*250
+                    x:(x_pos*250)-300, y:(y_pos*250)-300
                 };
 
                 //Dup checker, get all current node ids
@@ -437,7 +445,7 @@ class GraphNet extends Component {
 
       const userLoggedIn = (
           <div>
-              <div className={classes.section} style={{paddingTop:0}}>
+              <div className={classes.section} style={{paddingTop:"0px",paddingBottom:"0px"}}>
                 <h1 className={classes.title}>Logged in as: {this.props.username}</h1>
                 <Link to="/all">
                     <Button
@@ -527,7 +535,7 @@ class GraphNet extends Component {
       // console.log("IM RENDERING >>>>>>>>> isAUth",this.state.isAuth);
       return (
         <div className={classes.section} style={{marginTop:"-150px"}} >
-          {this.props.isAuth && jesus_fresh ? userLoggedIn : userNotLoggedIn}
+          {authentication && jesus_fresh ? userLoggedIn : userNotLoggedIn}
           {!jesus_fresh ? notJesusFresh : <p/>}
         </div>
       )
@@ -535,15 +543,14 @@ class GraphNet extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("GraphNet mapstatetoprops",state);
-  return {
+    return {
         isAuth: state.raven.authenticated,
         username: state.raven.username,
         all_users: state.user.all_users,
         all_subjects: state.subject.subject_list,
         students_by_subject: state.subject.users,
         selected: state.user.student,
-  }
+    }
 }
 
 const mapDispatchToProps = dispatch => ({

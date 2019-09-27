@@ -117,7 +117,7 @@ class Header extends React.Component {
         </Toolbar>
         <Hidden mdUp implementation="js">
           <Drawer
-            variant="temporary"
+            variant="useful"
             anchor={"right"}
             open={this.state.mobileOpen}
             classes={{

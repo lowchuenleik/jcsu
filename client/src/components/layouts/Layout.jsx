@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Footer from "../Footer/Footer.jsx";
 import classNames from "classnames";
 import Header from "../Header/Header.jsx";
 import Parallax from "../Parallax/Parallax.jsx";
@@ -25,7 +24,6 @@ class Layout extends Component {
             <div>
                 { this.props.children }
             </div>
-            <Footer />
         </div>
         )
     }

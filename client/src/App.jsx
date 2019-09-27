@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Provider} from 'react-redux';
-import { Route, Router } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import store from './stores/store';
 import Home from './components/layouts/Home';
 import Grid from './components/layouts/Grid';
@@ -14,6 +14,7 @@ import NewsItemDetail from './components/presentation/NewsItemDetail';
 import NewsArticle from "./components/containers/NewsArticle";
 import NewsSubmit from "./components/containers/NewsSubmit";
 import history from "./history";
+import Footer from "./components/Footer/Footer";
 import All from "./components/containers/All"
 
 import "assets/scss/material-kit-react.scss?v=1.7.0";
@@ -23,17 +24,19 @@ class App extends Component {
     return (
         <Provider store={store}>
             <Router history = {history}>
-                <Route exact path='/testgrid' component={TestGrid}  />
-                <Route exact path={["/","/testing"]} component={Grid}  />
-                <Layout>
-                    <Route path="/about" component={About} exact />
-                    <Route path='/news/:id' component={NewsArticle}/>
-                    <Route path='/submit' component={NewsSubmit}/>
-                    <Route path='/login' component={Authentication}/>
-                    <Route exact path='/all' component={All} />
-                    <Route path='/user/:id' component={StudentView}/>
-                </Layout>
-                
+                <Switch>
+                    <Route exact path='/testgrid' component={TestGrid}  />
+                    <Route exact path={["/","/testing"]} component={Grid}  />
+                    <Layout>
+                        <Route exact path="/about" component={About} />
+                        <Route exact path='/news/:id' component={NewsArticle}/>
+                        <Route exact path='/submit' component={NewsSubmit}/>
+                        <Route exact path='/login' component={Authentication}/>
+                        <Route exact path='/all' component={All} />
+                        <Route exact path='/user/:id' component={StudentView}/>
+                    </Layout>
+                </Switch>
+                <Route component={Footer}/>
             </Router>
         </Provider>
        );
