@@ -179,7 +179,7 @@ class GraphNet extends Component {
         let all_subjects = this.props.all_subjects;
         let allusernames = this.props.all_users.map((item)=>item.username);
 
-        allusernames.push('broken','sk948');
+        allusernames.push('broken','sk948','tk523','ow254');
 
         let temp_auth = allusernames.length === 1 ? true: allusernames.includes(this.props.username);
         console.log("In graphnet component mounting",this.props.username);
