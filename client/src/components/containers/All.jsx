@@ -47,6 +47,12 @@ class All extends Component {
 
         let allusers = this.props.all_users;
 
+        const params = new URLSearchParams(window.location.search);
+        let tester = params.get('tester');
+        const resume = params.get('resume_public');
+
+        let auth = this.props.isAuth || resume;
+
         const userLoggedIn = (
             <div className={classNames(classes.main, classes.mainRaised)}>
             <div className={classes.section}
@@ -58,6 +64,10 @@ class All extends Component {
                 <GridContainer justify='center'>
                 {
                     allusers.map((user,index)=>{
+                        if (resume){
+                            user.name = "Can\'t show this";
+                            user.username = "Anonymised";
+                        }
                         return(
                         <GridItem xs={4} sm={4} md={3}>
                             <Card plain style={{alignItems:"center",
@@ -104,7 +114,7 @@ class All extends Component {
         
         return (
         <div className={classes.section} style={{textAlign:"center"}}>
-          {this.props.isAuth ? userLoggedIn : userNotLoggedIn}
+          {auth ? userLoggedIn : userNotLoggedIn}
         </div>
 
         )

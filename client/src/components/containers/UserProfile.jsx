@@ -33,7 +33,7 @@ class UserProfile extends Component {
         const wrapper = document.getElementById("wrapper");
 
         console.log("COMP UPDATE IN USER PROFILE",this.props,prevProps);
-        let temp = {_id:"EBEGINNIN"};
+        let temp = {_id:"beginning"};
         if (this.props.selected.length === 0 
             || prevProps.selected.length === 0 
             || this.props.selected[0] === undefined) {
@@ -69,15 +69,13 @@ class UserProfile extends Component {
         const { classes } = this.props;
 
         const params = new URLSearchParams(window.location.search);
-        const tester = params.get('tester');
-
-        let authentication = tester ? true : this.props.isAuth;
+        let tester = params.get('tester');
+        const resume = params.get('resume_public');
 
         let selected_user;
 
         if (this.props.selected !== undefined && this.props.selected[0] !== undefined) {
             selected_user = this.props.selected[0];
-
         } else{
             selected_user = {username:"No_username",
                 name: "John Appleseed",
@@ -85,6 +83,10 @@ class UserProfile extends Component {
                 accommodation:{name:"No accom"}
             }
         }
+        if(resume){
+            tester = true;
+        }
+        let authentication = tester ? true : this.props.isAuth;
 
         let related_by_subject = this.props.students_by_subject.filter(function(student){
             if (student.username === selected_user.username){
@@ -103,11 +105,21 @@ class UserProfile extends Component {
         console.log("RELATED BY SUBJECT USERS",related_by_subject);
         // {this.props.isAuth && jesus_fresh ? userLoggedIn : userNotLoggedIn}
 
+        
+        let temp_selected_user = {};
+        if (!resume){
+            temp_selected_user = selected_user;
+        } else{
+            temp_selected_user.username = "or_this_either_sorry";
+            temp_selected_user.name="Cant_show_this";
+            temp_selected_user.subject = selected_user.subject;
+        }
+
         const userLoggedIn = (
             <div style={{paddingBottom:"50px"}} id='wrapper' className="wrapper" >
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
-                        <img src={require(`assets/img/faces/${selected_user.username}.jpg`)} alt="..." className={imageClasses} id="userprofile_image" 
+                        <img src={require(`assets/img/faces/${temp_selected_user.username}.jpg`)} alt="..." className={imageClasses} id="userprofile_image" 
                                 style={{
                                     width:"500px",
                                     boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"
@@ -116,18 +128,18 @@ class UserProfile extends Component {
                     <GridItem xs={12} sm={12} md={8}>
                         <h2 className={classes.cardTitle} style={{whiteSpace:"pre"}}>
                             <br />
-                            {selected_user.name}    |&nbsp;&nbsp;&nbsp;&nbsp;
-                            {selected_user.username}
+                            {temp_selected_user.name}    |&nbsp;&nbsp;&nbsp;&nbsp;
+                            {temp_selected_user.username}
                             <br />
                         </h2>
-                        <h4 style={{display:"inline-block"}}><i >{selected_user.username}</i></h4>
+                        <h4 style={{display:"inline-block"}}><i >{temp_selected_user.username}</i></h4>
                         <h3 className={classes.title}>
-                            Studying: {selected_user.subject.name}
+                            Studying: {temp_selected_user.subject.name}
                             <strong style={{display:"block"}}>
                             </strong>
                         </h3>
                         <h5>
-                            {selected_user.subject.description}
+                            {temp_selected_user.subject.description}
                         </h5>
                     </GridItem>
                 </GridContainer>
@@ -137,18 +149,26 @@ class UserProfile extends Component {
                 <GridContainer justify='center'>
                     {
                         related_by_subject.map((user,index)=>{
+                            let temp_username = {};
+                            if (resume){
+                                temp_username.name="Anonymised name";
+                                temp_username.username = "Anonymised_username";
+                            } else{
+                                temp_username.name=user.name;
+                                temp_username.username = user.username;
+                            }
                             return(
                             <GridItem xs={12} sm={12} md={3}>
                                 <Card plain style={{alignItems:"center",
                             textAlign:"center"}}>
 
-                                    <img src={require(`assets/img/faces/${user.username}.jpg`)} 
+                                    <img src={require(`assets/img/faces/${temp_username.username}.jpg`)} 
                                     className={imageClasses}
                                     id="gridface" 
                                     style={{boxShadow:"0px 20px 38px -6px rgba(0,0,0,0.75)"}} />
                                 <CardBody>
                                     <h4 className={classes.description}>
-                                        {user.name} | {user.subject.name}
+                                        {temp_username.name} | {user.subject.name}
                                     </h4>
                                 </CardBody>
                             </Card>

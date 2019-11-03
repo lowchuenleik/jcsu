@@ -35,4 +35,3 @@ def rename(directory, pattern):
                   os.path.join(directory, crsid[index]['username'] + ext))
 
 rename(r'/Users/clow/Desktop/jcsu/scripts/final',r'*.jpg')
-

@@ -111,6 +111,7 @@ class GraphNet extends Component {
     triggerFetch(user){
           this.props.getUser(user);
           console.log("TRIGGER FETCH props",this.props);
+          console.log("Fetching for this user",user);
           if (this.props.selected.length === 0){
               return
           }else if (Array.isArray(this.props.selected) && this.props.selected[0].subject._id !== "None"){
@@ -162,7 +163,8 @@ class GraphNet extends Component {
         let node_ids = [];
 
 
-        let allusers = this.props.all_users;
+        let real_allusers = this.props.all_users;
+        let allusers = [];
         let username_here =  this.props.username;
 
         let random_edge_flag = false;
@@ -172,14 +174,27 @@ class GraphNet extends Component {
         // Hacky auth stuff lol
 
         const params = new URLSearchParams(window.location.search);
-        const tester = params.get('tester');
+        let tester = params.get('tester');
+        const resume = params.get('resume_public');
 
         let authentication = tester ? true : this.props.isAuth;
 
         let all_subjects = this.props.all_subjects;
         let allusernames = this.props.all_users.map((item)=>item.username);
-
         allusernames.push('broken','sk948','tk523','ow254');
+
+        if (resume){
+            real_allusers.forEach(function(user,index){
+                let new_user = Object.assign({},user);
+                new_user.username = index.toString();
+                new_user.name = "Anon "+ index.toString();
+                allusers.push(new_user);
+            })
+            tester = true;
+        }else{
+            allusers = real_allusers;
+        }
+
 
         let temp_auth = allusernames.length === 1 ? true: allusernames.includes(this.props.username);
         console.log("In graphnet component mounting",this.props.username);
@@ -307,7 +322,7 @@ class GraphNet extends Component {
                 try{
                     temp_fix = require(`assets/img/faces/${item.username}.jpg`);
                 } catch (e) {
-                    temp_fix = require("assets/img/faces/1.jpg");
+                    temp_fix = require("assets/img/faces/Anonymised.jpg");
                 }
 
                 let node_size = item.username === username_here ? 150 : 50;
@@ -431,7 +446,12 @@ class GraphNet extends Component {
               console.log("Selected edges:");
               console.log(edges);
               if (nodes[0]!==undefined){
-                  _this.triggerFetch(nodes[0]);
+                  if (resume){
+                      let temp_int = parseInt(nodes[0]);
+                      _this.triggerFetch(real_allusers[temp_int].username);
+                  }else{
+                    _this.triggerFetch(nodes[0]);
+                  }
               }
           },
           zoom: function (event) {
@@ -535,7 +555,7 @@ class GraphNet extends Component {
       // console.log("IM RENDERING >>>>>>>>> isAUth",this.state.isAuth);
       return (
         <div className={classes.section} style={{marginTop:"-150px"}} >
-          {authentication && jesus_fresh ? userLoggedIn : userNotLoggedIn}
+          {authentication || jesus_fresh ? userLoggedIn : userNotLoggedIn}
           {!jesus_fresh ? notJesusFresh : <p/>}
         </div>
       )
