@@ -47,7 +47,9 @@ class Grid extends Component {
                   <GridItem xs={12} sm={12} md={6}>
                     <h1 className={classes.title}>JCSU 2019</h1>
                     <h4>
-                      Welcome to Jesus College. Come and get to know your fellow freshers.
+                      This is a website I made for the College as part of the student committee. 
+                      Some data has been anonymised to protect the privacy of students but I have added it as a link
+                      to demonstrate my competency in programming.
                     </h4>
                     <br />
                     <Button
